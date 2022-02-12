@@ -1,7 +1,9 @@
 package com.hendisantika.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.hendisantika.validation.FieldsValueMatch;
+import com.hendisantika.validation.ValidEmail;
+import com.hendisantika.validation.ValidPassword;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -16,8 +18,7 @@ import javax.validation.constraints.Size;
  * Time: 21.52
  * To change this template use File | Settings | File Templates.
  */
-@Getter
-@Setter
+@Data
 @FieldsValueMatch.List({
         @FieldsValueMatch(
                 field = "password",
