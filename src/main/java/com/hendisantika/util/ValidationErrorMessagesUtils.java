@@ -49,4 +49,15 @@ public class ValidationErrorMessagesUtils implements MessageSourceAware {
         return messages;
     }
 
+    /**
+     * Class-level validations has message property as default "AnnotationClass.messageKey"
+     * For a given message extract the key out of it
+     *
+     * @param message validation error default message
+     * @return extracted key from validation error
+     */
+    public String extractMessageKeyNameFromErrorMessage(String message) {
+        String[] splitted = message.split("\\.");
+        return splitted[1];
+    }
 }
