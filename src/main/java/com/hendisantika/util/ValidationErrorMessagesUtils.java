@@ -60,4 +60,9 @@ public class ValidationErrorMessagesUtils implements MessageSourceAware {
         String[] splitted = message.split("\\.");
         return splitted[1];
     }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 }
