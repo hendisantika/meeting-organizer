@@ -46,4 +46,9 @@ public class UtilsMailService implements MessageSourceAware, MailService {
 
         return mailMessage;
     }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 }
