@@ -74,4 +74,7 @@ public class LocationManagementService implements LocationService {
         return locationRepository.countAllByNameIgnoreCase(name) <= 0;
     }
 
+    private boolean isNameSameAsBeforeEdition(String oldName, String editedName) {
+        return editedName.equalsIgnoreCase(oldName);
+    }
 }
