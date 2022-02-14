@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : meeting-organizer
@@ -42,5 +44,10 @@ public class LocationManagementService implements LocationService {
     @Override
     public Location saveAndFlush(Location location) {
         return locationRepository.saveAndFlush(location);
+    }
+
+    @Override
+    public List<Location> findAll() {
+        return locationRepository.findAll();
     }
 }
