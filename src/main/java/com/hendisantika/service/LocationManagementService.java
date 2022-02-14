@@ -26,4 +26,9 @@ public class LocationManagementService implements LocationService {
         this.locationRepository = locationRepository;
         this.userService = userService;
     }
+
+    @Override
+    public boolean existsByNameIgnoreCase(String name) {
+        return locationRepository.existsByNameIgnoreCase(name);
+    }
 }
