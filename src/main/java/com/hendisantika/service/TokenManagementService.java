@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,10 @@ public class TokenManagementService implements TokenService {
     @Autowired
     public TokenManagementService(VerificationTokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
+    }
+
+    @Override
+    public VerificationToken saveAndFlush(VerificationToken token) {
+        return tokenRepository.saveAndFlush(token);
     }
 }
