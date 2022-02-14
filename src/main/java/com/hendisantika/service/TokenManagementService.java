@@ -35,4 +35,9 @@ public class TokenManagementService implements TokenService {
     public VerificationToken findByUser(User user) {
         return tokenRepository.findByUser(user);
     }
+
+    @Override
+    public VerificationToken findByToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
 }
