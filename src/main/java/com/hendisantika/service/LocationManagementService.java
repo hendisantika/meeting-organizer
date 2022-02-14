@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.Location;
 import com.hendisantika.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,5 +31,11 @@ public class LocationManagementService implements LocationService {
     @Override
     public boolean existsByNameIgnoreCase(String name) {
         return locationRepository.existsByNameIgnoreCase(name);
+    }
+
+    @Override
+    public Location addNewLocation(Location location, String creatorEmail) {
+        location.setCreatedBy(userService.findOneByEmail(creatorEmail));
+        return locationRepository.saveAndFlush(location);
     }
 }
