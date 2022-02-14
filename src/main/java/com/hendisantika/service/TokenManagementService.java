@@ -40,4 +40,9 @@ public class TokenManagementService implements TokenService {
     public VerificationToken findByToken(String token) {
         return tokenRepository.findByToken(token);
     }
+
+    @Override
+    public void delete(VerificationToken token) {
+        tokenRepository.delete(token);
+    }
 }
