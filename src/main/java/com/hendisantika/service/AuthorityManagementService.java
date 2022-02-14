@@ -28,4 +28,9 @@ public class AuthorityManagementService implements AuthorityService {
 
         return authority;
     }
+
+    @Override
+    public Authority saveAuthority(String authorityName) {
+        return authorityRepository.saveAndFlush(new Authority(authorityName));
+    }
 }
