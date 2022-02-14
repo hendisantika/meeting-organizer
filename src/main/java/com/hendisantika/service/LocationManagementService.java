@@ -1,6 +1,7 @@
 package com.hendisantika.service;
 
 import com.hendisantika.domain.Location;
+import com.hendisantika.domain.User;
 import com.hendisantika.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -53,6 +54,12 @@ public class LocationManagementService implements LocationService {
 
     @Override
     public Location findOneById(Long id) {
-        return locationRepository.findOne(id);
+        return locationRepository.findById(id).get();
+    }
+
+    @Override
+    public boolean canEditLocation(Location location, String userEmail) {
+        User currentUser = userService.findOneByEmail(userEmail);
+        return currentUser != null && location.getCreatedBy() == currentUser;
     }
 }
