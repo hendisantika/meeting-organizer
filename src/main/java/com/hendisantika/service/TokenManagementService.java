@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.User;
 import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,10 @@ public class TokenManagementService implements TokenService {
     @Override
     public VerificationToken saveAndFlush(VerificationToken token) {
         return tokenRepository.saveAndFlush(token);
+    }
+
+    @Override
+    public VerificationToken findByUser(User user) {
+        return tokenRepository.findByUser(user);
     }
 }
