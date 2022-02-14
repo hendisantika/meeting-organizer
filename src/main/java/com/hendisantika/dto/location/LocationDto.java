@@ -1,10 +1,12 @@
 package com.hendisantika.dto.location;
 
+import com.hendisantika.domain.Location;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Created by IntelliJ IDEA.
