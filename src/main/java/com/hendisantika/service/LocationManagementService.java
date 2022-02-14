@@ -62,4 +62,11 @@ public class LocationManagementService implements LocationService {
         User currentUser = userService.findOneByEmail(userEmail);
         return currentUser != null && location.getCreatedBy() == currentUser;
     }
+
+    @Override
+    public boolean isLocationNameAvailable(String name, Location currentLocation) {
+        boolean available = isNameTaken(name) || isNameSameAsBeforeEdition(currentLocation.getName(), name);
+
+        return available;
+    }
 }
