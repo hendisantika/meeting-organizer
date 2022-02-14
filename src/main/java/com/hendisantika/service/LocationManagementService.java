@@ -50,4 +50,9 @@ public class LocationManagementService implements LocationService {
     public List<Location> findAll() {
         return locationRepository.findAll();
     }
+
+    @Override
+    public Location findOneById(Long id) {
+        return locationRepository.findOne(id);
+    }
 }
