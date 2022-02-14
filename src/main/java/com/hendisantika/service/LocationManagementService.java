@@ -69,4 +69,9 @@ public class LocationManagementService implements LocationService {
 
         return available;
     }
+
+    private boolean isNameTaken(String name) {
+        return locationRepository.countAllByNameIgnoreCase(name) <= 0;
+    }
+
 }
