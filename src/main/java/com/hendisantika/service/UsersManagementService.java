@@ -4,6 +4,7 @@ import com.hendisantika.domain.Authority;
 import com.hendisantika.domain.User;
 import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.dto.RegistrationFormDto;
+import com.hendisantika.dto.profile.ProfileInfoDto;
 import com.hendisantika.repository.AuthorityRepository;
 import com.hendisantika.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +118,14 @@ public class UsersManagementService implements UserService {
     @Override
     public boolean passwordMatchesStoredPassword(String password, User user) {
         return passwordEncoder.matches(password, user.getPassword());
+    }
+
+    @Override
+    public void updateUserProfile(User user, ProfileInfoDto dto) {
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setPhone(dto.getPhone());
+
+        saveUserAndFlush(user);
     }
 }
