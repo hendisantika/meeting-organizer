@@ -113,4 +113,9 @@ public class UsersManagementService implements UserService {
         actualToken = tokenService.saveAndFlush(actualToken);
         return actualToken;
     }
+
+    @Override
+    public boolean passwordMatchesStoredPassword(String password, User user) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
 }
