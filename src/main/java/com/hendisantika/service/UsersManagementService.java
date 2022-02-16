@@ -6,6 +6,7 @@ import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.dto.RegistrationFormDto;
 import com.hendisantika.dto.profile.ProfileInfoDto;
 import com.hendisantika.dto.profile.ProfileMailDto;
+import com.hendisantika.dto.profile.ProfilePasswordDto;
 import com.hendisantika.repository.AuthorityRepository;
 import com.hendisantika.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,12 @@ public class UsersManagementService implements UserService {
     @Override
     public void updateUserProfile(User user, ProfileMailDto dto) {
         user.setEmail(dto.getEmail());
+        saveUserAndFlush(user);
+    }
+
+    @Override
+    public void updateUserProfile(User user, ProfilePasswordDto dto) {
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         saveUserAndFlush(user);
     }
 }
