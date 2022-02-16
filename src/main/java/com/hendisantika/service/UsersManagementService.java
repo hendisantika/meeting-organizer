@@ -85,4 +85,9 @@ public class UsersManagementService implements UserService {
         VerificationToken verificationToken = new VerificationToken(token, user);
         tokenService.saveAndFlush(verificationToken);
     }
+
+    @Override
+    public User findOne(Long id) {
+        return userRepository.findById(id).get();
+    }
 }
