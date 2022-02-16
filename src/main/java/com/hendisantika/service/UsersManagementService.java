@@ -2,6 +2,7 @@ package com.hendisantika.service;
 
 import com.hendisantika.domain.Authority;
 import com.hendisantika.domain.User;
+import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.dto.RegistrationFormDto;
 import com.hendisantika.repository.AuthorityRepository;
 import com.hendisantika.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -59,5 +61,22 @@ public class UsersManagementService implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void rollbackUserRegistration(User userToDelete) {
+        VerificationToken tokenToDelete = tokenService.findByUser(userToDelete);
+
+        List<Authority> allAuthorities = authorityRepository.findAll();
+        for (Authority auth : allAuthorities) {
+            for (User userWithAuthority : auth.getUsers()) {
+                if (userWithAuthority.getId().equals(userToDelete.getId())) {
+                    auth.getUsers().remove(userWithAuthority);
+                }
+            }
+        }
+        authorityRepository.save(allAuthorities);
+        tokenService.delete(tokenToDelete);
+        userRepository.delete(userToDelete);
     }
 }
