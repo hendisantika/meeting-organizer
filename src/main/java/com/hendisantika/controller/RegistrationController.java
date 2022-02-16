@@ -1,6 +1,7 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.domain.User;
+import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.dto.RegistrationFormDto;
 import com.hendisantika.event.RegistrationCompleteEvent;
 import com.hendisantika.service.MailService;
@@ -12,10 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -113,4 +111,36 @@ public class RegistrationController {
 
         return REDIRECT_TO_LOGIN_PAGE;
     }
+
+    /**
+     * Enable user's account if the token is valid and non-expired
+     *
+     * @param token              token from user's email
+     * @param redirectAttributes
+     * @return redirect to login page and show a message about operation result
+     */
+    @GetMapping("/confirm")
+    public String confirmRegistration(@RequestParam("token") String token, RedirectAttributes redirectAttributes) {
+
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+
+        if (verificationToken == null) {
+            redirectAttributes.addFlashAttribute("tokenNotFound", Boolean.TRUE);
+            return REDIRECT_TO_LOGIN_PAGE;
+        }
+
+        if (verificationToken.isTokenExpired()) {
+            redirectAttributes.addFlashAttribute("tokenExpired", Boolean.TRUE);
+            return REDIRECT_TO_LOGIN_PAGE;
+        }
+
+        User userForToken = verificationToken.getUser();
+
+        userForToken.setEnabled(true);
+        userService.saveUserAndFlush(userForToken);
+
+        redirectAttributes.addFlashAttribute("userEnabled", Boolean.TRUE);
+        return REDIRECT_TO_LOGIN_PAGE;
+    }
+
 }
