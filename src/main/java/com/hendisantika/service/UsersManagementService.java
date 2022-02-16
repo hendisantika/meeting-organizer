@@ -1,10 +1,16 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.Authority;
+import com.hendisantika.domain.User;
+import com.hendisantika.dto.RegistrationFormDto;
 import com.hendisantika.repository.AuthorityRepository;
 import com.hendisantika.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,5 +47,17 @@ public class UsersManagementService implements UserService {
     public boolean isEmailAlreadyTaken(String email) {
         Long usersWithEqualEmail = userRepository.countAllByEmailIgnoreCase(email);
         return usersWithEqualEmail > 0;
+    }
+
+    @Override
+    public User registerUser(RegistrationFormDto dto) {
+        User user = new User(dto);
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authorityService.findAuthorityByNameCreateAuthorityIfNotFound("USER"));
+
+        user.setAuthorities(authorities);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.saveAndFlush(user);
     }
 }
