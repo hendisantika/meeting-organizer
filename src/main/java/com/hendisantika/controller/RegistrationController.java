@@ -1,15 +1,25 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.domain.User;
 import com.hendisantika.dto.RegistrationFormDto;
+import com.hendisantika.event.RegistrationCompleteEvent;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,5 +66,51 @@ public class RegistrationController {
     public String displayRegistrationPage(Model model) {
         model.addAttribute("dto", new RegistrationFormDto());
         return REGISTRATION_PAGE;
+    }
+
+    /**
+     * Register new user if form has no errors and send email with authorization token
+     *
+     * @param dto                form's dto
+     * @param model              view model
+     * @param bindingResult      the result of a form validation
+     * @param redirectAttributes attributes used only after redirection
+     * @return name of the registration page if there were any error or login page after successful registration
+     */
+    @PostMapping
+    public String processRegistrationForm(@Valid @ModelAttribute(name = "dto") RegistrationFormDto dto,
+                                          BindingResult bindingResult,
+                                          Model model,
+                                          RedirectAttributes redirectAttributes) {
+
+        // Check for global errors - class level custom annotations
+        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasGlobalErrors()) {
+                model.addAllAttributes(errorsUtils.errorMessagesForClassLevelValidations(bindingResult.getGlobalErrors()));
+            }
+
+            return REGISTRATION_PAGE;
+        }
+
+        if (userService.isEmailAlreadyTaken(dto.getEmail())) {
+            model.addAttribute("emailAlreadyTaken", Boolean.TRUE);
+            return REGISTRATION_PAGE;
+        }
+
+        User registeredUser = userService.registerUser(dto);
+        String tokenConfirmationUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
+
+        try {
+            eventPublisher.publishEvent(new RegistrationCompleteEvent(registeredUser, tokenConfirmationUrl,
+                    LocaleContextHolder.getLocale()));
+
+            redirectAttributes.addFlashAttribute("registrationSuccessful", Boolean.TRUE);
+        } catch (Exception e) {
+            userService.rollbackUserRegistration(registeredUser);
+            model.addAttribute("emailSendException", Boolean.TRUE);
+            return REGISTRATION_PAGE;
+        }
+
+        return REDIRECT_TO_LOGIN_PAGE;
     }
 }
