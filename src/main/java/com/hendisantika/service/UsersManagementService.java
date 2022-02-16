@@ -79,4 +79,10 @@ public class UsersManagementService implements UserService {
         tokenService.delete(tokenToDelete);
         userRepository.delete(userToDelete);
     }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken verificationToken = new VerificationToken(token, user);
+        tokenService.saveAndFlush(verificationToken);
+    }
 }
