@@ -90,4 +90,10 @@ public class UsersManagementService implements UserService {
     public User findOne(Long id) {
         return userRepository.findById(id).get();
     }
+
+    @Override
+    public VerificationToken getVerificationToken(String token) {
+        return tokenService.findByToken(token);
+    }
+
 }
