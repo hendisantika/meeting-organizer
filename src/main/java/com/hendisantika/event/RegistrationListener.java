@@ -1,11 +1,15 @@
 package com.hendisantika.event;
 
+import com.hendisantika.domain.User;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,4 +37,19 @@ public class RegistrationListener implements ApplicationListener<RegistrationCom
         this.mailService = mailService;
     }
 
+    @Override
+    public void onApplicationEvent(RegistrationCompleteEvent event) {
+        User user = (User) event.getSource();
+        String url = event.getTokenConfirmationUrl();
+        String token = UUID.randomUUID().toString();
+
+        url += RegistrationController.REGISTRATION_CONFIRM_ENDPOINT;
+        url += ("?token=" + token);
+
+        userService.createVerificationToken(user, token);
+
+        SimpleMailMessage mailMessage = mailService.prepareRegistrationMailMessage(url,
+                user.getEmail(), event.getLocale());
+        mailSender.send(mailMessage);
+    }
 }
