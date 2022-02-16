@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -101,4 +102,15 @@ public class UsersManagementService implements UserService {
         return userRepository.saveAndFlush(user);
     }
 
+    @Override
+    public VerificationToken generateNewVerificationToken(String email) {
+        User user = userRepository.findByEmail(email);
+        VerificationToken actualToken = tokenService.findByUser(user);
+
+        actualToken.setToken(UUID.randomUUID().toString());
+        actualToken.updateExpirationTime();
+
+        actualToken = tokenService.saveAndFlush(actualToken);
+        return actualToken;
+    }
 }
