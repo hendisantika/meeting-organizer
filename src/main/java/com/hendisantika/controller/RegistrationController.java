@@ -1,11 +1,14 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.dto.RegistrationFormDto;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -41,5 +44,17 @@ public class RegistrationController {
         this.mailService = mailService;
         this.errorsUtils = errorsUtils;
         this.eventPublisher = eventPublisher;
+    }
+
+    /**
+     * Display registration page and pass dto object to view
+     *
+     * @param model view model
+     * @return name of the registration page
+     */
+    @GetMapping
+    public String displayRegistrationPage(Model model) {
+        model.addAttribute("dto", new RegistrationFormDto());
+        return REGISTRATION_PAGE;
     }
 }
