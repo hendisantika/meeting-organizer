@@ -1,5 +1,6 @@
 package com.hendisantika.event;
 
+import com.hendisantika.controller.RegistrationController;
 import com.hendisantika.domain.User;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
