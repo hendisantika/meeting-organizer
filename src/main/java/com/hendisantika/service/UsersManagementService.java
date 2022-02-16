@@ -96,4 +96,9 @@ public class UsersManagementService implements UserService {
         return tokenService.findByToken(token);
     }
 
+    @Override
+    public User saveUserAndFlush(User user) {
+        return userRepository.saveAndFlush(user);
+    }
+
 }
