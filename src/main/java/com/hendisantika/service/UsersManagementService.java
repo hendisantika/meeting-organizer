@@ -36,4 +36,10 @@ public class UsersManagementService implements UserService {
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
     }
+
+    @Override
+    public boolean isEmailAlreadyTaken(String email) {
+        Long usersWithEqualEmail = userRepository.countAllByEmailIgnoreCase(email);
+        return usersWithEqualEmail > 0;
+    }
 }
