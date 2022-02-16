@@ -11,6 +11,7 @@ import com.hendisantika.util.ValidationErrorMessagesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -154,5 +155,50 @@ public class RegistrationController {
     public String displayResendTokenPage(Model model) {
         model.addAttribute("dto", new ResendTokenDto());
         return RESEND_TOKEN_PAGE;
+    }
+
+    /**
+     * For already registered user generate and send new token
+     *
+     * @param dto                dto connected with form on the page
+     * @param bindingResult      the validation result
+     * @param model              view model
+     * @param redirectAttributes
+     * @return resend token page name in case of any error or login page if form was processed successfully
+     */
+    @PostMapping("/resendToken")
+    public String processResentTokenForm(@ModelAttribute(name = "dto") @Valid ResendTokenDto dto,
+                                         BindingResult bindingResult,
+                                         Model model,
+                                         RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            return RESEND_TOKEN_PAGE;
+        }
+
+        if (!userService.isEmailAlreadyTaken(dto.getEmail())) {
+            model.addAttribute("emailNotRegistered", Boolean.TRUE);
+            return RESEND_TOKEN_PAGE;
+        }
+
+        VerificationToken generatedToken = userService.generateNewVerificationToken(dto.getEmail());
+        String tokenConfirmationUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
+
+        tokenConfirmationUrl = tokenConfirmationUrl.replace("/resendToken", REGISTRATION_CONFIRM_ENDPOINT);
+        tokenConfirmationUrl += "?token=";
+        tokenConfirmationUrl += generatedToken.getToken();
+
+        SimpleMailMessage mailMessage = mailService.prepareRegistrationMailMessage(tokenConfirmationUrl,
+                generatedToken.getUser().getEmail(), LocaleContextHolder.getLocale());
+
+        try {
+            mailService.sendEmail(mailMessage);
+            redirectAttributes.addFlashAttribute("tokenResend", Boolean.TRUE);
+        } catch (Exception e) {
+            model.addAttribute("emailSendException", Boolean.TRUE);
+            return RESEND_TOKEN_PAGE;
+        }
+
+        return REDIRECT_TO_LOGIN_PAGE;
     }
 }
