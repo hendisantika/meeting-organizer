@@ -3,6 +3,7 @@ package com.hendisantika.controller;
 import com.hendisantika.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -29,5 +30,10 @@ public class LocationController {
     @Autowired
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
+    }
+
+    @GetMapping
+    public String displayLocationsPage() {
+        return LOCATIONS_PAGE;
     }
 }
