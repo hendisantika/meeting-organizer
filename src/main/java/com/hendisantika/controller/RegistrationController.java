@@ -3,6 +3,7 @@ package com.hendisantika.controller;
 import com.hendisantika.domain.User;
 import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.dto.RegistrationFormDto;
+import com.hendisantika.dto.ResendTokenDto;
 import com.hendisantika.event.RegistrationCompleteEvent;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
@@ -143,4 +144,15 @@ public class RegistrationController {
         return REDIRECT_TO_LOGIN_PAGE;
     }
 
+    /**
+     * Display resend token page and pass dto to the view
+     *
+     * @param model view model
+     * @return name of the resend token page
+     */
+    @GetMapping("/resendToken")
+    public String displayResendTokenPage(Model model) {
+        model.addAttribute("dto", new ResendTokenDto());
+        return RESEND_TOKEN_PAGE;
+    }
 }
