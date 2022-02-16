@@ -1,6 +1,7 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.domain.Location;
+import com.hendisantika.dto.location.AddLocationDto;
 import com.hendisantika.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,4 +51,11 @@ public class LocationController {
         return BROWSE_LOCATIONS_PAGE;
     }
 
+    @GetMapping(value = "/add")
+    public String displayAddLocationPage(Model model) {
+        model.addAttribute("dto", new AddLocationDto());
+        model.addAttribute("mode", "add");
+
+        return LOCATION_FORM_PAGE;
+    }
 }
