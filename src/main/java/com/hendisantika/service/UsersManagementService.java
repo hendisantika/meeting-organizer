@@ -142,4 +142,9 @@ public class UsersManagementService implements UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         saveUserAndFlush(user);
     }
+
+    @Override
+    public User findOneByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
