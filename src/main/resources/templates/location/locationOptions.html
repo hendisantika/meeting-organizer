@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="locationOptionsThumbnails">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3 th:text="#{locationPage.locationOptions.browseLocations.title}">Title</h3>
+                    <p th:text="#{locationPage.locationOptions.browseLocations.text}">Text</p>
+                    <p>
+                        <a class="btn btn-primary" role="button"
+                           th:href="@{/location/browse}" th:text="#{href.browse}">Browse</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3 th:text="#{locationPage.locationOptions.addLocation.title}">Title</h3>
+                    <p th:text="#{locationPage.locationOptions.addLocation.text}">Text</p>
+                    <p>
+                        <a class="btn btn-primary" role="button"
+                           th:href="@{/location/add}" th:text="#{href.add}">Add</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:fragment="locationNotFound">
+    <div class="alert alert-warning" role="alert">
+        <span class="text-center" th:text="#{locationPage.location.notFound}">Not found</span>
+    </div>
+</div>
+<div th:fragment="locationDetails">
+    <br/><br/>
+    <div class="row">
+        <div class="col-xd-12 col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="#{locationPage.location.name}">Name</h3>
+                </div>
+                <div class="panel-body">
+                    <span th:text="${location.name}">Name</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xd-12 col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="#{locationPage.location.description}">Desc</h3>
+                </div>
+                <div class="panel-body">
+                    <span th:text="${location.description}">description</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xd-12 col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="#{locationPage.location.maxMembers}">Max members</h3>
+                </div>
+                <div class="panel-body">
+                    <span th:text="${location.maxMembers}">maxMembers</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xd-12 col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="#{locationPage.location.numberOfReservations}">Res no</h3>
+                </div>
+                <div class="panel-body">
+                    <span th:text="${location.reservations.size()}">reservations size</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
