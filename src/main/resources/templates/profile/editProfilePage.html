@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="text/html ;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title th:text="#{editProfilePage.title}">Edit Profile</title>
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="../static/css/style.css"
+          rel="stylesheet"
+          th:href="@{/css/style.css}"
+          type="text/css"/>
+</head>
+<body>
+<div th:replace="fragments/common :: navbar">
+    <p>Navbar</p>
+</div>
+<div class="container">
+    <div class="row" th:if="${updateSuccessful}">
+        <div class="alert alert-success col-xs-12 col-sm-6 col-sm-offset-3" role="alert">
+            <p th:text="#{editProfilePage.updateSuccessful}">Update done</p>
+        </div>
+    </div>
+
+    <!-- Profile's info form-->
+    <form class="form-horizontal" th:method="POST" th:object="${infoDto}">
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+        <div th:class="${#fields.hasErrors('firstName')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="first-name" th:text="#{label.firstName}">First Name</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="first-name" th:field="*{firstName}"
+                       th:placeholder="#{label.firstName}" type="text"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('firstName')}">
+                    <p th:errors="*{firstName}">firstName error message</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('lastName')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="last-name" th:text="#{label.lastName}">Last Name</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="last-name" th:field="*{lastName}"
+                       th:placeholder="#{label.lastName}" type="text"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('lastName')}">
+                    <p th:errors="*{lastName}">lastName error message</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('phone')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="phone" th:text="#{label.phone}">Phone</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="phone" th:field="*{phone}"
+                       th:placeholder="#{label.phone}" type="text"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('phone')}">
+                    <p th:errors="*{phone}">phone error message</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-3 col-sm-offset-4">
+                <button class="btn btn-default btn-block" name="editInfo" th:text="#{editProfilePage.btn.editInfo}"
+                        value="editInfo">
+                    Edit profile info
+                </button>
+            </div>
+        </div>
+    </form>
+    <!-- Profile's info form-->
+
+
+    <!-- Profile's mail form-->
+    <form class="form-horizontal" th:method="POST" th:object="${mailDto}">
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+        <div th:class="${#fields.hasErrors('email') or emailAlreadyTaken == true or confirmEmail == true}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="mail" th:text="#{label.email}">Mail</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="mail" th:field="*{email}"
+                       th:placeholder="#{label.email}" type="email"/>
+                <div class="alert alert-danger"
+                     role="alert"
+                     th:if="${#fields.hasErrors('email') or emailAlreadyTaken == true or confirmEmail == true}">
+                    <p th:errors="*{email}">email error message</p>
+                    <p th:if="${confirmEmail}" th:text="${confirmEmail}">Emails do not match</p>
+                    <p th:if="${emailAlreadyTaken}" th:text="#{email.emailAlreadyTaken}">Email is already taken</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('confirmEmail') or emailsNotMatch != null}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="confirm-mail" th:text="#{label.confirmEmail}">Confirm Mail</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="confirm-mail"
+                       th:field="*{confirmEmail}" th:placeholder="#{label.confirmEmail}" type="email"/>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${#fields.hasErrors('confirmEmail') or emailsNotMatch != null}">
+                    <p th:errors="*{confirmEmail}">confirmEmail error message</p>
+                    <p th:text="${emailsNotMatch}">Emails do not match</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-3 col-sm-offset-4">
+                <button class="btn btn-default btn-block" name="editMail"
+                        th:text="#{editProfilePage.btn.changeMail}">
+                    Change mail
+                </button>
+            </div>
+        </div>
+    </form>
+    <!-- Profile's mail form-->
+
+
+    <!-- Profile's password form-->
+    <form class="form-horizontal" th:method="POST" th:object="${passwordDto}">
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+
+        <div th:class="${#fields.hasErrors('oldPassword') or currentPasswordNotEqual == true}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="old-password" th:text="#{label.oldPassword}">Old password</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="old-password" th:field="*{oldPassword}"
+                       th:placeholder="#{label.oldPassword}" type="password"/>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${#fields.hasErrors('oldPassword') or currentPasswordNotEqual == true}">
+                    <p th:errors="*{oldPassword}">oldPassword error message</p>
+                    <p th:text="#{currentPasswordNotEqual}">currentPasswordNotEqual</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('password')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="password" th:text="#{label.password}">Password</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="password" th:field="*{password}"
+                       th:placeholder="#{label.password}" type="password"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('password')}">
+                    <p th:errors="*{password}">password error message</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('confirmPassword') or passwordsNotMatch != null}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2" for="confirm-password" th:text="#{label.confirmPassword}">Confirm
+                password</label>
+            <div class="col-xs-12 col-sm-8">
+                <input class="form-control" id="confirm-password" th:field="*{confirmPassword}"
+                       th:placeholder="#{label.confirmPassword}" type="password"/>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${#fields.hasErrors('confirmPassword') or passwordsNotMatch != null}">
+                    <p th:errors="*{confirmPassword}">confirmPassword error message</p>
+                    <p th:text="${passwordsNotMatch}">Passwords do not match</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-3 col-sm-offset-4">
+                <button class="btn btn-default btn-block" name="editPassword"
+                        th:text="#{editProfilePage.btn.changePassword}">
+                    Change password
+                </button>
+            </div>
+        </div>
+    </form>
+    <!-- Profile's password form-->
+
+    <div th:class="text-center">
+        <nav>
+            <ul th:class="pager">
+                <li th:class="previous">
+                    <a th:href="@{/profile}" th:text="#{href.backToProfilePage}">Back to profile</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div th:replace="fragments/common :: footer">
+    <p>Footer</p>
+</div>
+<div th:replace="fragments/common :: scripts">
+    <p>Scripts</p>
+</div>
+<script src="../resources/static/profile.js" th:src="@{/js/profile.js}"></script>
+</body>
+</html>
