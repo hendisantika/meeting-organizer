@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="text/html ;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title th:text="#{registrationPage.title}">Registration</title>
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>Meeting Organizer <small>Registration</small></h1>
+    </div>
+    <form class="form-horizontal" th:method="POST" th:object="${dto}">
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+
+        <div class="row" th:if="${emailSendException}">
+            <div class="alert alert-danger col-sm-8 col-sm-offset-2" role="alert">
+                <p th:text="#{registrationPage.emailSendError}">Email exception</p>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('firstName')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="firstName" th:text="#{label.firstName}">First
+                Name</label>
+            <div class="col-xs-12 col-sm-10">
+                <input class="form-control" id="firstName" placeholder="FirstName" required="required"
+                       th:field="*{firstName}" type="text"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('firstName')}">
+                    <p th:errors="*{firstName}">firstName error message</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('lastName')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="lastName" th:text="#{label.lastName}">Last Name</label>
+            <div class="col-xs-12 col-sm-10">
+                <input class="form-control" id="lastName" placeholder="Last Name" required="required"
+                       th:field="*{lastName}" type="text"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('lastName')}">
+                    <p th:errors="*{lastName}">lastName error message</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('email') or emailAlreadyTaken == true}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="email" th:text="#{label.email}">Email</label>
+            <div class="col-xs-12 col-sm-10">
+                <input class="form-control" id="email" placeholder="Email" required="required" th:field="*{email}"
+                       type="email"/>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${#fields.hasErrors('email') or emailAlreadyTaken == true}">
+                    <p th:errors="*{email}">email error message</p>
+                    <p th:if="${confirmEmail}" th:text="${confirmEmail}">Emails do not match</p>
+                    <p th:if="${emailAlreadyTaken}" th:text="#{email.emailAlreadyTaken}">Email is already taken</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('confirmEmail') or emailsNotMatch != null}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="verifyEmail" th:text="#{label.confirmEmail}">Confirm
+                email</label>
+            <div class="col-xs-12 col-sm-10">
+                <input class="form-control" id="verifyEmail" placeholder="Confirm email" required="required"
+                       th:field="*{confirmEmail}" type="email"/>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${#fields.hasErrors('confirmEmail') or emailsNotMatch != null}">
+                    <p th:errors="*{confirmEmail}">confirmEmail error message</p>
+                    <p th:text="${emailsNotMatch}">Emails do not match</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('password')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="password" th:text="#{label.password}">Password</label>
+            <div class="col-xs-12 col-sm-10">
+                <input aria-describedby="helpPassword" class="form-control" id="password" placeholder="Password"
+                       required="required"
+                       th:field="*{password}" type="password"/>
+                <span class="help-block" id="helpPassword">Min 8 characters, at least one capital letter, digit and special character</span>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('password')}">
+                    <p th:errors="*{password}">Password error message</p>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('confirmPassword') or passwordsNotMatch != null}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="verifyPassword" th:text="#{label.confirmPassword}">Confirm
+                Password</label>
+            <div class="col-xs-12 col-sm-10">
+                <input class="form-control" id="verifyPassword" placeholder="Confirm Password" required="required"
+                       th:field="*{confirmPassword}" type="password"/>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${#fields.hasErrors('confirmPassword') or passwordsNotMatch != null}">
+                    <p th:errors="*{confirmPassword}">matchPassword error message</p>
+                    <p th:text="${passwordsNotMatch}">Passwords do not match</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4">
+                <button class="btn btn-default btn-block" th:text="#{button.register}" type="submit">Register me !
+                </button>
+            </div>
+        </div>
+    </form>
+    <div th:class="text-center">
+        <nav>
+            <ul th:class="pager">
+                <li>
+                    <a th:href="@{/login}" th:text="#{href.backToLoginPage}">Back to login page</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div th:replace="fragments/common :: scripts">
+    <p>Scripts</p>
+</div>
+<div th:replace="fragments/common :: footer">
+    <p>Footer</p>
+</div>
+</body>
+</html>
