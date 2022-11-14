@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#me-navbar-collapse"
+                        data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/home}">Meeting Organizer</a>
+            </div>
+            <div class="collapse navbar-collapse" id="me-navbar-collapse">
+                <ul class="nav navbar-nav" id="navigation-tabs">
+                    <li><a th:href="@{/profile}" th:text="#{navigation.profile}">Profile <span
+                            class="sr-only">(current)</span></a></li>
+                    <li><a th:href="@{/location}" th:text="#{navigation.locations}">Locations</a></li>
+                    <li><a th:href="@{/history}" th:text="#{navigation.history}">Places</a></li>
+                    <li><a th:href="@{/meetings}" th:text="#{navigation.meetings}">Your Meetings</a></li>
+                    <li><a th:href="@{/meetings/new}" th:text="#{navigation.newMeeting}">New Meeting</a></li>
+                    <li><a th:href="@{/people}" th:text="#{navigation.people}">Search for people</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/logout}" th:text="#{navigation.logout}">Logout</a></li>
+                </ul>
+                <p class="navbar-text navbar-right" sec:authorize="isAuthenticated()">
+                    <span th:text="#{navigation.hello}"/> <span sec:authentication="name"/>
+                </p>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="navbar navbar-default navbar-fixed-bottom" th:fragment="footer">
+    <div class="container">
+        <p class="navbar-text pull-left">© 2017 - Meeting Organizer Aleksander Kołata</p>
+    </div>
+</div>
+<div th:fragment="scripts">
+    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../resources/static/utils.js" th:src="@{/js/utils.js}"></script>
+    <script src="../resources/static/jquery.dataTables.min.js" th:src="@{/js/jquery.dataTables.min.js}"></script>
+    <script src="../resources/static/dataTables.bootstrap.min.js" th:src="@{/js/dataTables.bootstrap.min.js}"></script>
+</div>
+</body>
+</html>
