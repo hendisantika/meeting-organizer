@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="text/html ;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title th:text="#{resendTokenPage.title}">Login</title>
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>Meeting Organizer</h1>
+    </div>
+    <form class="form-horizontal" th:action="@{/register/resendToken}" th:method="POST" th:object="${dto}">
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+
+        <div class="row" th:if="${emailSendException}">
+            <div class="alert alert-danger col-sm-8 col-sm-offset-2" role="alert">
+                <p th:text="#{registrationPage.emailSendError}">Email exception</p>
+            </div>
+        </div>
+
+
+        <div class="row" th:if="${emailNotRegistered}">
+            <div class="alert alert-danger col-sm-8 col-sm-offset-2" role="alert">
+                <p th:text="#{resendTokenPage.emailNotRegistered}">Email not found</p>
+            </div>
+        </div>
+
+
+        <div th:class="${#fields.hasErrors('email')}? 'form-group has-error' : 'form-group'">
+            <label class="col-xs-12 col-sm-2 control-label" for="email" th:text="#{label.email}">Email</label>
+            <div class="col-xs-12 col-sm-10">
+                <input class="form-control" id="email" placeholder="Email" required="required" th:field="*{email}"
+                       type="email"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}">
+                    <p th:errors="*{email}">email error message</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4">
+                <button class="btn btn-default btn-block" th:text="#{resendTokenPage.button.sendToken}" type="submit">
+                    Resend token!
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="text-center">
+        <nav>
+            <ul th:class="pager">
+                <li>
+                    <a th:href="@{/login}" th:text="#{href.backToLoginPage}">Back to login page</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div th:replace="fragments/common :: scripts">
+    <p>Scripts</p>
+</div>
+<div th:replace="fragments/common :: footer">
+    <p>Footer</p>
+</div>
+</body>
+</html>
