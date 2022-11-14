@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="text/html ;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title th:text="#{homePage.title}">Login</title>
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="../static/css/style.css"
+          rel="stylesheet"
+          th:href="@{/css/style.css}"
+          type="text/css"/>
+</head>
+<body>
+<div th:replace="fragments/common :: navbar">
+    <p>Nabar</p>
+</div>
+<div class="container">
+
+</div>
+<div th:replace="fragments/common :: footer">
+    <p>Footer</p>
+</div>
+<div th:replace="fragments/common :: scripts">
+    <p>Scripts</p>
+</div>
+</body>
+</html>
