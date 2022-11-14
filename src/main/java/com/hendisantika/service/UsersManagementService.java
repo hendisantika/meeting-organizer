@@ -9,7 +9,7 @@ import com.hendisantika.dto.profile.ProfileMailDto;
 import com.hendisantika.dto.profile.ProfilePasswordDto;
 import com.hendisantika.repository.AuthorityRepository;
 import com.hendisantika.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +29,7 @@ import java.util.UUID;
  * To change this template use File | Settings | File Templates.
  */
 @Service
+@RequiredArgsConstructor
 public class UsersManagementService implements UserService {
 
     private final UserRepository userRepository;
@@ -37,17 +38,17 @@ public class UsersManagementService implements UserService {
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UsersManagementService(UserRepository userRepository,
-                                  AuthorityService authorityService,
-                                  AuthorityRepository authorityRepository,
-                                  TokenService tokenService, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.authorityService = authorityService;
-        this.authorityRepository = authorityRepository;
-        this.tokenService = tokenService;
-        this.passwordEncoder = passwordEncoder;
-    }
+//    @Autowired
+//    public UsersManagementService(UserRepository userRepository,
+//                                  AuthorityService authorityService,
+//                                  AuthorityRepository authorityRepository,
+//                                  TokenService tokenService, PasswordEncoder passwordEncoder) {
+//        this.userRepository = userRepository;
+//        this.authorityService = authorityService;
+//        this.authorityRepository = authorityRepository;
+//        this.tokenService = tokenService;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     @Override
     public boolean isEmailAlreadyTaken(String email) {
@@ -79,7 +80,7 @@ public class UsersManagementService implements UserService {
                 }
             }
         }
-        authorityRepository.save(allAuthorities);
+        authorityRepository.saveAll(allAuthorities);
         tokenService.delete(tokenToDelete);
         userRepository.delete(userToDelete);
     }
