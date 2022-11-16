@@ -1,5 +1,6 @@
 package com.hendisantika.config;
 
+import com.hendisantika.service.MeetingOrganizerUsersDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -38,4 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     };
 
     private static final String SALT = "salt by Meeting Organizer :)";
+
+    private MeetingOrganizerUsersDetailsService userService;
+
 }
