@@ -8,14 +8,18 @@ import com.hendisantika.event.RegistrationCompleteEvent;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,6 +37,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/register")
+@RequiredArgsConstructor
 public class RegistrationController {
 
     public final static String REGISTRATION_PAGE = "register",
@@ -44,17 +49,6 @@ public class RegistrationController {
     private final MailService mailService;
     private final ValidationErrorMessagesUtils errorsUtils;
     private final ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    public RegistrationController(UserService userService,
-                                  MailService mailService,
-                                  ValidationErrorMessagesUtils errorsUtils,
-                                  ApplicationEventPublisher eventPublisher) {
-        this.userService = userService;
-        this.mailService = mailService;
-        this.errorsUtils = errorsUtils;
-        this.eventPublisher = eventPublisher;
-    }
 
     /**
      * Display registration page and pass dto object to view

@@ -63,11 +63,87 @@
         </div>
     </nav>
 </div>
-<div class="navbar navbar-default navbar-fixed-bottom" th:fragment="footer">
+<div class="navbar navbar-default navbar-fixed-bottom" th:fragment="footer2">
     <div class="container">
         <p class="navbar-text pull-left">© 2022 - Meeting Organizer Hendi Santika</p>
     </div>
 </div>
+
+<div class="container" th:fragment="footer">
+    <div class="container">
+        <p class="navbar-text pull-left">© 2022 - Meeting Organizer Hendi Santika</p>
+    </div>
+    <footer class="py-5">
+        <div class="row">
+            <div class="col-2">
+                <h5>Section</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Home</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Features</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Pricing</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">FAQs</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">About</a></li>
+                </ul>
+            </div>
+
+            <div class="col-2">
+                <h5>Section</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Home</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Features</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Pricing</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">FAQs</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">About</a></li>
+                </ul>
+            </div>
+
+            <div class="col-2">
+                <h5>Section</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Home</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Features</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Pricing</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">FAQs</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">About</a></li>
+                </ul>
+            </div>
+
+            <div class="col-4 offset-1">
+                <form>
+                    <h5>Subscribe to our newsletter</h5>
+                    <p>Monthly digest of whats new and exciting from us.</p>
+                    <div class="d-flex w-100 gap-2">
+                        <label class="visually-hidden" for="newsletter1">Email address</label>
+                        <input class="form-control" id="newsletter1" placeholder="Email address" type="text">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between py-4 my-4 border-top">
+            <p>&copy; © 2022 - Meeting Organizer Hendi Santika, Inc. All rights reserved.</p>
+            <ul class="list-unstyled d-flex">
+                <li class="ms-3"><a class="link-dark" href="#">
+                    <svg class="bi" height="24" width="24">
+                        <use xlink:href="#twitter"/>
+                    </svg>
+                </a></li>
+                <li class="ms-3"><a class="link-dark" href="#">
+                    <svg class="bi" height="24" width="24">
+                        <use xlink:href="#instagram"/>
+                    </svg>
+                </a></li>
+                <li class="ms-3"><a class="link-dark" href="#">
+                    <svg class="bi" height="24" width="24">
+                        <use xlink:href="#facebook"/>
+                    </svg>
+                </a></li>
+            </ul>
+        </div>
+    </footer>
+</div>
+
 <div th:fragment="scripts">
     <script src="/webjars/jquery/3.6.1/dist/jquery.min.js"></script>
     <script src="/webjars/bootstrap/5.2.1/dist/js/bootstrap.min.js"></script>
