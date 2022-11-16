@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/css/**",
             "/js/**",
             "/images/**",
+            "/login/**",
             "/",
             "/register",
             "/register/confirm",
@@ -53,7 +54,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(12, new SecureRandom(SALT.getBytes()));
     }
 
-    @Override
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll();
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().antMatchers(PUBLIC_MATCHERS);
+//    }
+
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
@@ -78,7 +89,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe();
     }
 
-    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
