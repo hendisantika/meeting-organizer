@@ -15,7 +15,7 @@
     <div class="page-header">
         <h1>Meeting Organizer <small>Registration</small></h1>
     </div>
-    <form class="form-horizontal" th:method="POST" th:object="${dto}">
+    <form class="form-horizontal" th:action="register" th:method="POST" th:object="${dto}">
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
 
 
