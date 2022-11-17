@@ -49,4 +49,13 @@ public class ValidEmailTest {
             assertEquals(t.getMessage(), "Message");
         }
     }
+
+    @Test
+    public void testValidEmail_givenEmailWithNothingAfterAt_ShouldBeInvalid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("invalid.mail@"));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(1, constraintViolations.size());
+    }
 }
