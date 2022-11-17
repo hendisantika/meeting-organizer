@@ -77,4 +77,13 @@ public class ValidEmailTest {
 
         assertEquals(0, constraintViolations.size());
     }
+
+    @Test
+    public void testValidEmail_givenNullEmail_ShouldBeInValid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(new TestDto());
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(1, constraintViolations.size());
+    }
 }
