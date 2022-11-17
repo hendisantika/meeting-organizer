@@ -90,4 +90,12 @@ public class FieldsValueMatchTest {
 
         assertEquals(0, constraintViolations.size());
     }
+
+    private TestDto prepareDto(String email, String confirmEmail) {
+        TestDto dto = new TestDto();
+        dto.email = email;
+        dto.confirmEmail = confirmEmail;
+
+        return dto;
+    }
 }
