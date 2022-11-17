@@ -63,4 +63,13 @@ public class FieldsValueMatchTest {
 
         assertEquals(1, constraintViolations.size());
     }
+
+    @Test
+    public void testFieldsValueMatch_givenNullValues_ShouldBeInvalid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("invalid.mail", null));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertTrue(constraintViolations.size() == 1);
+    }
 }
