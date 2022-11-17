@@ -1,5 +1,7 @@
 package com.hendisantika.validation;
 
+import org.hibernate.validator.HibernateValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
@@ -37,5 +39,12 @@ public class FieldsValueMatchTest {
         public void setConfirmEmail(String confirmEmail) {
             this.confirmEmail = confirmEmail;
         }
+    }
+
+    @BeforeEach
+    public void setup() {
+        localValidatorFactoryBean = new LocalValidatorFactoryBean();
+        localValidatorFactoryBean.setProviderClass(HibernateValidator.class);
+        localValidatorFactoryBean.afterPropertiesSet();
     }
 }
