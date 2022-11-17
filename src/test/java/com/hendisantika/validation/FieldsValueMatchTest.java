@@ -82,4 +82,12 @@ public class FieldsValueMatchTest {
         assertEquals(0, constraintViolations.size());
     }
 
+    @Test
+    public void testFieldsValueMatch_givenEqualValues_ShouldBeInvalid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("valid.mail", "valid.mail"));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(0, constraintViolations.size());
+    }
 }
