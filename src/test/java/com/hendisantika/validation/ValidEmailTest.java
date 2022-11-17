@@ -86,4 +86,11 @@ public class ValidEmailTest {
 
         assertEquals(1, constraintViolations.size());
     }
+
+    private TestDto prepareDto(String email) {
+        TestDto dto = new TestDto();
+        dto.email = email;
+
+        return dto;
+    }
 }
