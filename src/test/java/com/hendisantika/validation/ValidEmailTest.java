@@ -58,4 +58,13 @@ public class ValidEmailTest {
 
         assertEquals(1, constraintViolations.size());
     }
+
+    @Test
+    public void testValidEmail_givenTooShortDomain_ShouldBeInvalid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("invalid.mail@t"));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(1, constraintViolations.size());
+    }
 }
