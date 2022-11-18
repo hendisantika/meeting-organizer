@@ -64,4 +64,9 @@ public class ValidationErrorMessagesUtilsTest {
         assertEquals(1, messages.size());
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test
+    public void extractMessageKeyNameFromErrorMessage_givenValidMessage_shouldReturnValidKey() {
+        assertEquals("expected", messagesUtils.extractMessageKeyNameFromErrorMessage("annotationName.expected"));
+    }
 }
