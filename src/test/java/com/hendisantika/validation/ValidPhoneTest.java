@@ -2,7 +2,14 @@ package com.hendisantika.validation;
 
 import org.hibernate.validator.HibernateValidator;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import javax.validation.ConstraintViolation;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,5 +34,18 @@ public class ValidPhoneTest {
         localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.setProviderClass(HibernateValidator.class);
         localValidatorFactoryBean.afterPropertiesSet();
+    }
+
+    @Test
+    public void testValidPhone_givenEmptyString_shouldBeValidBecauseItMightBeEmpty() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto(""));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(0, constraintViolations.size());
+
+        for (ConstraintViolation<TestDto> t : constraintViolations) {
+            assertEquals(t.getMessage(), "Message");
+        }
     }
 }
