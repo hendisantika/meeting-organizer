@@ -75,4 +75,11 @@ public class ValidPhoneTest {
 
         assertEquals(0, constraintViolations.size());
     }
+
+    private TestDto prepareDto(String phone) {
+        TestDto dto = new TestDto();
+        dto.phone = phone;
+
+        return dto;
+    }
 }
