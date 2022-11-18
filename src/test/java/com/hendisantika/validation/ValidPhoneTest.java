@@ -66,4 +66,13 @@ public class ValidPhoneTest {
 
         assertEquals(0, constraintViolations.size());
     }
+
+    @Test
+    public void testValidPassword_givenNumberWithoutSpaces_shouldBeValid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("+48123456789"));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(0, constraintViolations.size());
+    }
 }
