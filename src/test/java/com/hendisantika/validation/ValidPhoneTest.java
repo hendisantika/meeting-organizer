@@ -48,4 +48,13 @@ public class ValidPhoneTest {
             assertEquals(t.getMessage(), "Message");
         }
     }
+
+    @Test
+    public void testValidPassword_givenNumberWithLetters_shouldHasErrors() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("+48 123 abd"));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(1, constraintViolations.size());
+    }
 }
