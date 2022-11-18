@@ -1,5 +1,6 @@
 package com.hendisantika.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,5 +69,12 @@ public class ValidationErrorMessagesUtilsTest {
     @Test
     public void extractMessageKeyNameFromErrorMessage_givenValidMessage_shouldReturnValidKey() {
         assertEquals("expected", messagesUtils.extractMessageKeyNameFromErrorMessage("annotationName.expected"));
+    }
+
+    @Test
+    public void extractMessageKeyNameFromErrorMessage_givenInvalidFormat_shouldThrowException() {
+        ArrayIndexOutOfBoundsException thrown = Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            assertEquals("expected", messagesUtils.extractMessageKeyNameFromErrorMessage("annotationName"));
+        });
     }
 }
