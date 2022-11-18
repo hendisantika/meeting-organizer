@@ -1,5 +1,7 @@
 package com.hendisantika.validation;
 
+import org.hibernate.validator.HibernateValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
@@ -18,5 +20,12 @@ public class ValidPasswordTest {
     class TestDto {
         @ValidPassword(message = "Message")
         String password;
+    }
+
+    @BeforeEach
+    public void setup() {
+        localValidatorFactoryBean = new LocalValidatorFactoryBean();
+        localValidatorFactoryBean.setProviderClass(HibernateValidator.class);
+        localValidatorFactoryBean.afterPropertiesSet();
     }
 }
