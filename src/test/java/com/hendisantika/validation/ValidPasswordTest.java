@@ -75,4 +75,11 @@ public class ValidPasswordTest {
 
         assertEquals(0, constraintViolations.size());
     }
+
+    private TestDto prepareDto(String password) {
+        TestDto dto = new TestDto();
+        dto.password = password;
+
+        return dto;
+    }
 }
