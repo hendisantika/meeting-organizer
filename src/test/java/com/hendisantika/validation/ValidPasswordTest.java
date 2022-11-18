@@ -48,4 +48,13 @@ public class ValidPasswordTest {
             assertEquals(t.getMessage(), "Message");
         }
     }
+
+    @Test
+    public void testValidPassword_givenNullPassword_ShouldBeInvalid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(new TestDto());
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(1, constraintViolations.size());
+    }
 }
