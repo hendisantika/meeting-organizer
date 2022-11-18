@@ -66,4 +66,13 @@ public class ValidPasswordTest {
 
         assertEquals(1, constraintViolations.size());
     }
+
+    @Test
+    public void testValidPassword_givenCorrectPassword_ShouldBeValid() {
+        Set<ConstraintViolation<TestDto>> constraintViolations =
+                localValidatorFactoryBean.validate(prepareDto("abcABC1$"));
+        constraintViolations = new HashSet<>(constraintViolations);
+
+        assertEquals(0, constraintViolations.size());
+    }
 }
