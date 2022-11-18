@@ -1,9 +1,14 @@
 package com.hendisantika.util;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
+
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,4 +27,10 @@ public class ValidationErrorMessagesUtilsTest {
 
     @MockBean
     private MessageSource messageSource;
+
+    @Test
+    public void errorMessagesForClassLevelValidations_givenEmptyList_ShouldReturnEmptyMap() {
+        assertEquals(Collections.emptyMap(),
+                messagesUtils.errorMessagesForClassLevelValidations(Collections.emptyList()));
+    }
 }
