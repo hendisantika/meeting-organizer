@@ -9,8 +9,11 @@ import org.springframework.validation.ObjectError;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,5 +45,23 @@ public class ValidationErrorMessagesUtilsTest {
         ObjectError error = new ObjectError("name", codes, new Object[]{}, "defaultMsg");
 
         assertEquals(Collections.emptyMap(), messagesUtils.errorMessagesForClassLevelValidations(List.of(error)));
+    }
+
+    @Test
+    public void errorMessagesForClassLevelValidations_givenErrorConnectedWithClassLevelValidation_ShouldReturnValidMap() {
+        String[] codes = {"FieldsValueMatch"};
+        ObjectError error = new ObjectError("name", codes, new Object[]{},
+                "FieldsValueMatch.propertyNotMatch");
+        String expectedMessage = "Expected validation message";
+
+
+        given(messageSource.getMessage("FieldsValueMatch.propertyNotMatch", null, Locale.getDefault()))
+                .willReturn(expectedMessage);
+
+        Map<String, String> messages = messagesUtils.errorMessagesForClassLevelValidations(List.of(error));
+        String actualMessage = messages.get("propertyNotMatch");
+
+        assertEquals(1, messages.size());
+        assertEquals(expectedMessage, actualMessage);
     }
 }
