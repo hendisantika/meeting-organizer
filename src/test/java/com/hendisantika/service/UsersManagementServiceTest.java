@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -112,5 +114,27 @@ public class UsersManagementServiceTest {
 
         assertNotNull(savedUser);
         assertEquals(user.getEmail(), savedUser.getEmail());
+    }
+
+    @Test
+    public void generateNewVerificationToken_shouldCreateValidToken() {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("user@mail.com");
+        VerificationToken oldToken = new VerificationToken("token", user);
+        oldToken.setExpirationTime(LocalDateTime.now());
+        VerificationToken newToken = new VerificationToken("tokenUpdated", user);
+        newToken.setExpirationTime(oldToken.getExpirationTime().plusHours(24));
+
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+        when(tokenRepository.findByUser(user)).thenReturn(oldToken);
+        when(tokenRepository.saveAndFlush(any(VerificationToken.class))).thenReturn(newToken);
+
+        VerificationToken updatedToken = userService.generateNewVerificationToken("user@mail.com");
+
+        assertNotNull(updatedToken);
+        assertEquals(newToken.getExpirationTime(), updatedToken.getExpirationTime());
+        assertEquals(newToken.getToken(), updatedToken.getToken());
+        assertEquals(newToken.getUser(), updatedToken.getUser());
     }
 }
