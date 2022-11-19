@@ -3,10 +3,14 @@ package com.hendisantika.service;
 import com.hendisantika.repository.UserRepository;
 import com.hendisantika.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,5 +41,15 @@ public class UsersManagementServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void isEmailAlreadyTaken_mailNotInRepository_ShouldReturnFalse() {
+        String mail = "user@mail.com";
+
+        when(userRepository.countAllByEmailIgnoreCase(mail)).thenReturn(0L);
+        boolean isMailTaken = userService.isEmailAlreadyTaken(mail);
+
+        assertFalse(isMailTaken);
     }
 }
