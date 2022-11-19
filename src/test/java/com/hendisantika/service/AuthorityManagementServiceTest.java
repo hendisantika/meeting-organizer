@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -47,4 +48,19 @@ public class AuthorityManagementServiceTest {
         assertNotNull(foundAuthority);
         assertEquals(authorityUser, foundAuthority.getAuthority());
     }
+
+    @Test
+    public void findAuthorityByNameCreateAuthorityIfNotFound_authorityNotFound_shouldCreateAuthority() {
+        String authorityUser = "USER";
+        Authority authority = new Authority(authorityUser);
+
+        when(authorityRepository.findByAuthority(authorityUser)).thenReturn(null);
+        when(authorityRepository.saveAndFlush(any(Authority.class))).thenReturn(authority);
+
+        Authority foundAuthority = authorityService.findAuthorityByNameCreateAuthorityIfNotFound(authorityUser);
+
+        assertNotNull(foundAuthority);
+        assertEquals("USER", foundAuthority.getAuthority());
+    }
+
 }
