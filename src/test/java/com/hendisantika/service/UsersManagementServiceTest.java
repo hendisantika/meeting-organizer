@@ -101,4 +101,16 @@ public class UsersManagementServiceTest {
 
         verify(tokenRepository, times(1)).saveAndFlush(any(VerificationToken.class));
     }
+
+    @Test
+    public void saveUser_shouldReturnSavedUser() {
+        User user = new User();
+        user.setEmail("user@mail.com");
+
+        when(userRepository.saveAndFlush(any(User.class))).thenReturn(user);
+        User savedUser = userService.saveUserAndFlush(user);
+
+        assertNotNull(savedUser);
+        assertEquals(user.getEmail(), savedUser.getEmail());
+    }
 }
