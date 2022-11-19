@@ -1,7 +1,9 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.Authority;
 import com.hendisantika.domain.User;
 import com.hendisantika.domain.VerificationToken;
+import com.hendisantika.dto.RegistrationFormDto;
 import com.hendisantika.repository.UserRepository;
 import com.hendisantika.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -136,5 +140,38 @@ public class UsersManagementServiceTest {
         assertEquals(newToken.getExpirationTime(), updatedToken.getExpirationTime());
         assertEquals(newToken.getToken(), updatedToken.getToken());
         assertEquals(newToken.getUser(), updatedToken.getUser());
+    }
+
+    @Test
+    public void registerUser_shouldCreateUserWithCorrectData() {
+        RegistrationFormDto dto = new RegistrationFormDto();
+        dto.setEmail("user@mail.pl");
+        dto.setFirstName("first");
+        dto.setLastName("last");
+        dto.setPassword("password");
+
+        Authority userAuthority = new Authority("USER");
+        userAuthority.setId(1L);
+
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(userAuthority);
+
+        User userFromDto = new User(dto);
+        userFromDto.setPassword("encodedPassword");
+        userFromDto.setAuthorities(authorities);
+
+        when(authorityService.findAuthorityByNameCreateAuthorityIfNotFound("USER"))
+                .thenReturn(userAuthority);
+        when(passwordEncoder.encode(userFromDto.getPassword())).thenReturn("encodedPassword");
+        when(userRepository.saveAndFlush(any(User.class))).thenReturn(userFromDto);
+
+        User registeredUser = userService.registerUser(dto);
+
+        assertNotNull(registeredUser);
+        assertEquals(userFromDto.getEmail(), registeredUser.getEmail());
+        assertEquals(userFromDto.getFirstName(), registeredUser.getFirstName());
+        assertEquals(userFromDto.getLastName(), registeredUser.getLastName());
+        assertEquals(userFromDto.getPassword(), registeredUser.getPassword());
+        assertEquals(1, registeredUser.getAuthorities().size());
     }
 }
