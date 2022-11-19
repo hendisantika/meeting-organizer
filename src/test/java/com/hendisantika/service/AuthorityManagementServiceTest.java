@@ -1,10 +1,16 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.Authority;
 import com.hendisantika.repository.AuthorityRepository;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,5 +35,16 @@ public class AuthorityManagementServiceTest {
         public AuthorityService authorityService() {
             return new AuthorityManagementService();
         }
+    }
+
+    @Test
+    public void findAuthorityByNameCreateAuthorityIfNotFound_authorityFound_shouldReturnAuthorityFromDatabase() {
+        String authorityUser = "USER";
+
+        when(authorityRepository.findByAuthority(authorityUser)).thenReturn(new Authority(authorityUser));
+        Authority foundAuthority = authorityService.findAuthorityByNameCreateAuthorityIfNotFound(authorityUser);
+
+        assertNotNull(foundAuthority);
+        assertEquals(authorityUser, foundAuthority.getAuthority());
     }
 }
