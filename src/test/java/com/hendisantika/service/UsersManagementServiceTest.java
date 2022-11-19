@@ -1,5 +1,7 @@
 package com.hendisantika.service;
 
+import com.hendisantika.domain.User;
+import com.hendisantika.domain.VerificationToken;
 import com.hendisantika.repository.UserRepository;
 import com.hendisantika.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -62,5 +66,16 @@ public class UsersManagementServiceTest {
         boolean isMailTaken = userService.isEmailAlreadyTaken(mail);
 
         assertTrue(isMailTaken);
+    }
+
+    @Test
+    public void getVerificationToken_tokenFound_ShouldReturnToken() {
+        String token = "token";
+
+        when(tokenRepository.findByToken(token)).thenReturn(new VerificationToken(token, new User()));
+        VerificationToken tokenFromRepository = userService.getVerificationToken(token);
+
+        assertNotNull(tokenFromRepository);
+        assertEquals(token, tokenFromRepository.getToken());
     }
 }
