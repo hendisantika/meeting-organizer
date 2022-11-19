@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
@@ -51,5 +52,15 @@ public class UsersManagementServiceTest {
         boolean isMailTaken = userService.isEmailAlreadyTaken(mail);
 
         assertFalse(isMailTaken);
+    }
+
+    @Test
+    public void isEmailAlreadyTaken_mailInRepository_ShouldReturnTrue() {
+        String mail = "user@mail.com";
+
+        when(userRepository.countAllByEmailIgnoreCase(mail)).thenReturn(1L);
+        boolean isMailTaken = userService.isEmailAlreadyTaken(mail);
+
+        assertTrue(isMailTaken);
     }
 }
