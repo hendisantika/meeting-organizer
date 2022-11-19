@@ -14,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -77,5 +79,13 @@ public class UsersManagementServiceTest {
 
         assertNotNull(tokenFromRepository);
         assertEquals(token, tokenFromRepository.getToken());
+    }
+
+    @Test
+    public void getVerificationToken_tokenNotFound_ShouldReturnNull() {
+        when(tokenRepository.findByToken(anyString())).thenReturn(null);
+        VerificationToken tokenFromRepository = userService.getVerificationToken("token");
+
+        assertNull(tokenFromRepository);
     }
 }
