@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -58,5 +59,17 @@ public class VerificationTokenRepositoryTest {
         assertEquals(persistedToken.getId(), foundToken.getId());
         assertEquals(persistedToken.getUser(), foundToken.getUser());
         assertEquals(persistedToken.getExpirationTime(), foundToken.getExpirationTime());
+    }
+
+    @Test
+    public void findByToken_recordNotFound_shouldReturnNull() {
+        String token = UUID.randomUUID().toString();
+        String otherToken = UUID.randomUUID().toString();
+        VerificationToken persistedToken = new VerificationToken(token, user);
+
+        testEntityManager.persistAndFlush(persistedToken);
+        VerificationToken foundToken = tokenRepository.findByToken(otherToken);
+
+        assertNull(foundToken);
     }
 }
