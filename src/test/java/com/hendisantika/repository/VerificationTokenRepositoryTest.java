@@ -1,10 +1,17 @@
 package com.hendisantika.repository;
 
 import com.hendisantika.domain.User;
+import com.hendisantika.domain.VerificationToken;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,5 +43,20 @@ public class VerificationTokenRepositoryTest {
         user.setEmail("user@mail.com");
 
         testEntityManager.persistAndFlush(user);
+    }
+
+    @Test
+    public void findByToken_recordFound_shouldReturnValidToken() {
+        String token = UUID.randomUUID().toString();
+        VerificationToken persistedToken = new VerificationToken(token, user);
+
+        testEntityManager.persistAndFlush(persistedToken);
+        VerificationToken foundToken = tokenRepository.findByToken(token);
+
+        assertNotNull(foundToken);
+        assertEquals(persistedToken.getToken(), foundToken.getToken());
+        assertEquals(persistedToken.getId(), foundToken.getId());
+        assertEquals(persistedToken.getUser(), foundToken.getUser());
+        assertEquals(persistedToken.getExpirationTime(), foundToken.getExpirationTime());
     }
 }
