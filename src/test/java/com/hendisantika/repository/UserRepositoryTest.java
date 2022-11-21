@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
@@ -78,5 +79,20 @@ public class UserRepositoryTest {
         assertNull(userFound);
     }
 
+    @Test
+    public void findByEmail_recordFound_shouldReturnUser() {
+        String userMail = "user@mail.com";
+        User user = new User();
+        user.setFirstName("first");
+        user.setLastName("last");
+        user.setPassword("password");
+        user.setEmail(userMail);
+
+        User persistedUser = testEntityManager.persistAndFlush(user);
+        User foundUser = userRepository.findByEmail(userMail);
+
+        assertNotNull(foundUser);
+        assertEquals(persistedUser.getId(), foundUser.getId());
+    }
 
 }
