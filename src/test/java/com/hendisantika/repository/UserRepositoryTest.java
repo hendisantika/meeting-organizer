@@ -44,4 +44,20 @@ public class UserRepositoryTest {
         assertEquals(Long.valueOf(0), usersWithSameEmail);
     }
 
+    @Test
+    public void countAllByEmail_recordsFound_shouldReturnValidNumberOfRecords() {
+        String userMail = "user@mail.com";
+        User user = new User();
+        user.setFirstName("first");
+        user.setLastName("last");
+        user.setPassword("password");
+        user.setEmail(userMail);
+
+        testEntityManager.persistAndFlush(user);
+
+
+        Long usersWithSameEmail = userRepository.countAllByEmailIgnoreCase(userMail);
+        assertEquals(Long.valueOf(1), usersWithSameEmail);
+    }
+
 }
