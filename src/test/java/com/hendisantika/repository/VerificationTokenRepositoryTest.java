@@ -1,6 +1,7 @@
 package com.hendisantika.repository;
 
 import com.hendisantika.domain.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -26,4 +27,14 @@ public class VerificationTokenRepositoryTest {
 
     private User user;
 
+    @BeforeEach
+    public void setup() {
+        user = new User();
+        user.setFirstName("first");
+        user.setLastName("last");
+        user.setPassword("password");
+        user.setEmail("user@mail.com");
+
+        testEntityManager.persistAndFlush(user);
+    }
 }
