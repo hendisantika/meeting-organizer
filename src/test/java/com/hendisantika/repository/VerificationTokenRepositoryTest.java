@@ -88,4 +88,22 @@ public class VerificationTokenRepositoryTest {
         assertEquals(persistedToken.getExpirationTime(), foundToken.getExpirationTime());
     }
 
+    @Test
+    public void findByUser_recordNotFound_shouldReturnValidToken() {
+        String token = UUID.randomUUID().toString();
+        User otherUser = new User();
+        otherUser.setFirstName("first");
+        otherUser.setLastName("last");
+        otherUser.setPassword("password");
+        otherUser.setEmail("other.user@mail.com");
+
+        testEntityManager.persistAndFlush(otherUser);
+        VerificationToken persistedToken = new VerificationToken(token, user);
+
+        testEntityManager.persistAndFlush(persistedToken);
+        VerificationToken foundToken = tokenRepository.findByUser(otherUser);
+
+        assertNull(foundToken);
+    }
+
 }
