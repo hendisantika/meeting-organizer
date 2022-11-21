@@ -14,6 +14,10 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,5 +56,13 @@ public class HomeControllerTest {
     @Test
     public void homeController_isNotNull() {
         assertNotNull(homeController);
+    }
+
+    @Test
+    public void displayHomePage_returnsValidViewName() throws Exception {
+        mvc.perform(get(HOME_URL)
+                        .with(user("user")))
+                .andExpect(status().isOk())
+                .andExpect(view().name(HomeController.HOME_PAGE));
     }
 }
