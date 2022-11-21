@@ -1,8 +1,12 @@
 package com.hendisantika.repository;
 
+import com.hendisantika.domain.Authority;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,4 +27,14 @@ public class AuthorityRepositoryTest {
     @Autowired
     private AuthorityRepository authorityRepository;
 
+    @Test
+    public void findByAuthority_noRecordsFound_shouldReturnNull() {
+        Authority authority = new Authority("USER");
+        String authorityNameToSearchFor = "ADMIN";
+
+        testEntityManager.persistAndFlush(authority);
+        Authority foundAuthority = authorityRepository.findByAuthority(authorityNameToSearchFor);
+
+        assertNull(foundAuthority);
+    }
 }
