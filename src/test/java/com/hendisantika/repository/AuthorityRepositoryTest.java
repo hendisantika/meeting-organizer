@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
@@ -36,5 +38,17 @@ public class AuthorityRepositoryTest {
         Authority foundAuthority = authorityRepository.findByAuthority(authorityNameToSearchFor);
 
         assertNull(foundAuthority);
+    }
+
+    @Test
+    public void findByAuthority_recordsFound_shouldReturnValidAuthority() {
+        Authority authority = new Authority("USER");
+
+        testEntityManager.persistAndFlush(authority);
+        Authority foundAuthority = authorityRepository.findByAuthority("USER");
+
+        assertNotNull(foundAuthority);
+        assertEquals(authority.getId(), foundAuthority.getId());
+        assertEquals(authority.getAuthority(), foundAuthority.getAuthority());
     }
 }
