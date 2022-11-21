@@ -3,9 +3,11 @@ package com.hendisantika.controller;
 import com.hendisantika.MeetingOrganizerApplication;
 import com.hendisantika.config.MeetingOrganizerConfiguration;
 import com.hendisantika.config.SecurityConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
@@ -36,4 +38,11 @@ public class HomeControllerTest {
 
     private MockMvc mvc;
 
+    @BeforeEach
+    public void setUp() {
+        mvc = MockMvcBuilders
+                .webAppContextSetup(wac)
+                .addFilter(springSecurityFilterChain)
+                .build();
+    }
 }
