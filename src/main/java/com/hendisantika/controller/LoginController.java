@@ -22,4 +22,9 @@ public class LoginController {
     public String redirectToLogin() {
         return "redirect:/login";
     }
+
+    @GetMapping("/login")
+    public String displayLoginPage() {
+        return LOGIN_PAGE;
+    }
 }
