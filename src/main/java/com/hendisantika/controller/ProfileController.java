@@ -2,6 +2,7 @@ package com.hendisantika.controller;
 
 import com.hendisantika.domain.User;
 import com.hendisantika.dto.profile.ProfileInfoDto;
+import com.hendisantika.dto.profile.ProfileMailDto;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
 import lombok.RequiredArgsConstructor;
@@ -89,6 +90,34 @@ public class ProfileController {
         User currentUser = (User) authentication.getPrincipal();
 
         if (bindingResult.hasErrors()) {
+            return EDIT_PROFILE_PAGE;
+        }
+
+        userService.updateUserProfile(currentUser, dto);
+
+        model.addAttribute("updateSuccessful", Boolean.TRUE);
+        return EDIT_PROFILE_PAGE;
+    }
+
+    @PostMapping(path = "/edit", params = "editMail")
+    public String processEditMailForm(@Valid @ModelAttribute(name = PROFILE_MAIL_DTO) ProfileMailDto dto,
+                                      BindingResult bindingResult,
+                                      Authentication authentication,
+                                      Model model) {
+        User currentUser = (User) authentication.getPrincipal();
+
+        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasGlobalErrors()) {
+                model.addAllAttributes(
+                        errorsUtils.errorMessagesForClassLevelValidations(bindingResult.getGlobalErrors())
+                );
+            }
+
+            return EDIT_PROFILE_PAGE;
+        }
+
+        if (!isNewEmailAvailable(dto.getEmail(), currentUser)) {
+            model.addAttribute("emailAlreadyTaken", Boolean.TRUE);
             return EDIT_PROFILE_PAGE;
         }
 
