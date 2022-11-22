@@ -75,4 +75,19 @@ public class ImageControllerTest {
 
         assertEquals(0, mvcResult.getResponse().getContentLength());
     }
+
+    @Test
+    public void getUsersProfileImage_userWithoutImage_emptyResponse() throws Exception {
+        User user = new User();
+        user.setId(1L);
+
+        when(userService.findOne(user.getId())).thenReturn(user);
+
+        MvcResult mvcResult = mvc.perform(get("/profile/{id}/image", user.getId())
+                        .with(user(new User())))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(0, mvcResult.getResponse().getContentLength());
+    }
 }
