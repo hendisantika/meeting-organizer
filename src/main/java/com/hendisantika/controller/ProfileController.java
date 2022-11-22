@@ -68,4 +68,10 @@ public class ProfileController {
 
         return PROFILE_PAGE;
     }
+
+    @GetMapping(path = "/edit")
+    public String displayEditProfilePage() {
+        return EDIT_PROFILE_PAGE;
+    }
+
 }
