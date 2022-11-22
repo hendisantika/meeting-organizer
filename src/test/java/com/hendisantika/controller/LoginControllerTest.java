@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,5 +42,12 @@ public class LoginControllerTest {
         this.mvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
+    }
+
+    @Test
+    public void displayLoginPage_GetRequest_ShouldReturnValidViewName() throws Exception {
+        this.mvc.perform(get(LOGIN_URL))
+                .andExpect(status().isOk())
+                .andExpect(view().name("login"));
     }
 }
