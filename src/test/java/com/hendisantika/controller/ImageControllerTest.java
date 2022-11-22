@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -89,5 +90,21 @@ public class ImageControllerTest {
                 .andReturn();
 
         assertEquals(0, mvcResult.getResponse().getContentLength());
+    }
+
+    @Test
+    public void getUsersProfileImage_uploadImage_validResponse() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setProfilePicture("picture".getBytes());
+
+        when(userService.findOne(user.getId())).thenReturn(user);
+
+        MvcResult mvcResult = mvc.perform(get("/profile/{id}/image", user.getId())
+                        .with(user(new User())))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertArrayEquals("picture".getBytes(), mvcResult.getResponse().getContentAsByteArray());
     }
 }
