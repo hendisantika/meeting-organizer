@@ -69,4 +69,13 @@ public class LocationControllerTest {
                 .andExpect(view().name(LocationController.LOCATIONS_PAGE))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void displayBrowseLocationsPage_shouldReturnValidViewName() throws Exception {
+        mvc.perform(get(BROWSE_LOCATIONS_URL)
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML_VALUE))
+                .andExpect(view().name(LocationController.BROWSE_LOCATIONS_PAGE))
+                .andExpect(status().isOk());
+    }
 }
