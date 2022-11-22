@@ -1,6 +1,7 @@
 package com.hendisantika.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,4 +17,9 @@ import org.springframework.stereotype.Controller;
 public class LoginController {
 
     public static final String LOGIN_PAGE = "login";
+
+    @GetMapping("/")
+    public String redirectToLogin() {
+        return "redirect:/login";
+    }
 }
