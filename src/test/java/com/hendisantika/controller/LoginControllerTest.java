@@ -1,8 +1,11 @@
 package com.hendisantika.controller;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * Time: 06:13
  * To change this template use File | Settings | File Templates.
  */
-@WebMvcTest(controllers = LoginController.class, secure = false)
+@WebMvcTest(controllers = LoginController.class)
 public class LoginControllerTest {
 
     private static final String LOGIN_URL = "/login";
@@ -25,4 +28,8 @@ public class LoginControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Test
+    public void loginController_shouldNotBeNull() {
+        assertNotNull(loginController);
+    }
 }
