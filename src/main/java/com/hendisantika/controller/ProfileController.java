@@ -1,16 +1,22 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.domain.User;
+import com.hendisantika.dto.profile.ProfileInfoDto;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 /**
  * Created by IntelliJ IDEA.
@@ -74,4 +80,21 @@ public class ProfileController {
         return EDIT_PROFILE_PAGE;
     }
 
+    @PostMapping(path = "/edit", params = "editInfo")
+    public String processEditInfoForm(@Valid @ModelAttribute(name = PROFILE_INFO_DTO) ProfileInfoDto dto,
+                                      BindingResult bindingResult,
+                                      Authentication authentication,
+                                      Model model) {
+
+        User currentUser = (User) authentication.getPrincipal();
+
+        if (bindingResult.hasErrors()) {
+            return EDIT_PROFILE_PAGE;
+        }
+
+        userService.updateUserProfile(currentUser, dto);
+
+        model.addAttribute("updateSuccessful", Boolean.TRUE);
+        return EDIT_PROFILE_PAGE;
+    }
 }
