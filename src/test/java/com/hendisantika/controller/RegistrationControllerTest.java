@@ -17,6 +17,10 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
  * Created by IntelliJ IDEA.
@@ -62,5 +66,13 @@ public class RegistrationControllerTest {
     @Test
     public void registrationController_shouldNotBeNull() {
         assertNotNull(registrationController);
+    }
+
+    @Test
+    public void displayRegistrationPage_getRequest_shouldReturnValidViewNameAndHasDtoInModel() throws Exception {
+        mvc.perform(get(REGISTRATION_URL))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RegistrationController.REGISTRATION_PAGE))
+                .andExpect(model().attributeExists("dto"));
     }
 }
