@@ -6,6 +6,7 @@ import com.hendisantika.config.SecurityConfiguration;
 import com.hendisantika.domain.User;
 import com.hendisantika.dto.profile.ProfileInfoDto;
 import com.hendisantika.dto.profile.ProfileMailDto;
+import com.hendisantika.dto.profile.ProfilePasswordDto;
 import com.hendisantika.helper.TestHelper;
 import com.hendisantika.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -245,5 +246,24 @@ public class ProfileControllerTest {
                 .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
 
         verify(userService, times(1)).updateUserProfile(any(User.class), any(ProfileMailDto.class));
+    }
+
+    @Test
+    public void processEditPasswordForm_formInvalid_shouldHasErrors() throws Exception {
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editPassword", "")
+                        .param("oldPassword", "")
+                        .param("password", "asd")
+                        .param("confirmPassword", ""))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(model().errorCount(9))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfilePasswordDto.class));
     }
 }
