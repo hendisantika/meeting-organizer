@@ -266,4 +266,23 @@ public class ProfileControllerTest {
 
         verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfilePasswordDto.class));
     }
+
+    @Test
+    public void processEditPasswordForm_formInvalidButOldPassIncorrect_shouldHasErrors() throws Exception {
+        when(userService.passwordMatchesStoredPassword(any(String.class), any(User.class))).thenReturn(false);
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editPassword", "")
+                        .param("oldPassword", "abcD123@")
+                        .param("password", "abcD123@")
+                        .param("confirmPassword", "abcD123@"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("currentPasswordNotEqual"))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfilePasswordDto.class));
+    }
 }
