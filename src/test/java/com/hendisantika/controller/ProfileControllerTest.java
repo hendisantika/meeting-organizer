@@ -4,6 +4,7 @@ import com.hendisantika.MeetingOrganizerApplication;
 import com.hendisantika.config.MeetingOrganizerConfiguration;
 import com.hendisantika.config.SecurityConfiguration;
 import com.hendisantika.domain.User;
+import com.hendisantika.dto.profile.ProfileInfoDto;
 import com.hendisantika.helper.TestHelper;
 import com.hendisantika.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -146,6 +148,25 @@ public class ProfileControllerTest {
                         ProfileController.PROFILE_PASSWORD_DTO
                 ))
                 .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+    }
+
+    @Test
+    public void processEditInfoForm_formValid_shouldCallService() throws Exception {
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editInfo", "editInfo")
+                        .param("firstName", "John")
+                        .param("lastName", "Smith")
+                        .param("phone", "+48 103 234 567"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attributeExists("updateSuccessful"))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(1)).updateUserProfile(any(User.class), any(ProfileInfoDto.class));
     }
 
 }
