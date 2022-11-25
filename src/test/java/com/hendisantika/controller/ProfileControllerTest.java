@@ -3,6 +3,7 @@ package com.hendisantika.controller;
 import com.hendisantika.MeetingOrganizerApplication;
 import com.hendisantika.config.MeetingOrganizerConfiguration;
 import com.hendisantika.config.SecurityConfiguration;
+import com.hendisantika.domain.User;
 import com.hendisantika.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,11 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
  * Created by IntelliJ IDEA.
@@ -57,5 +63,14 @@ public class ProfileControllerTest {
     @Test
     public void profileController_isNotNull() {
         assertNotNull(profileController);
+    }
+
+    @Test
+    public void displayProfilePage_returnValidViewNameAndHasModelAttribute() throws Exception {
+        mvc.perform(get(PROFILE_URL)
+                        .with(user(new User())))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists(ProfileController.USER_ATTRIBUTE))
+                .andExpect(view().name(ProfileController.PROFILE_PAGE));
     }
 }
