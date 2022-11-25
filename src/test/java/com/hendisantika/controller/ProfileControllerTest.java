@@ -135,4 +135,17 @@ public class ProfileControllerTest {
         verify(userService, times(0)).saveUserAndFlush(any(User.class));
     }
 
+    @Test
+    public void displayEditProfilePage_shouldReturnValidViewNameAndHasModelAttributes() throws Exception {
+        mvc.perform(
+                        get(EDIT_PROFILE_URL).with(user(new User())))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists(
+                        ProfileController.PROFILE_INFO_DTO,
+                        ProfileController.PROFILE_MAIL_DTO,
+                        ProfileController.PROFILE_PASSWORD_DTO
+                ))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+    }
+
 }
