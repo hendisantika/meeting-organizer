@@ -156,4 +156,23 @@ public class ProfileController {
         model.addAttribute("updateSuccessful", Boolean.TRUE);
         return EDIT_PROFILE_PAGE;
     }
+
+    private boolean isNewEmailAvailable(String email, User currentUser) {
+        boolean isEmailAvailable = false;
+        boolean isEmailAlreadyTaken = userService.isEmailAlreadyTaken(email);
+
+        if (isEmailAlreadyTaken) {
+            boolean isEmailSameAsBefore = currentUser.getEmail().equalsIgnoreCase(email);
+
+            if (isEmailSameAsBefore) {
+                isEmailAvailable = true;
+            }
+
+        } else {
+            isEmailAvailable = true;
+        }
+
+        return isEmailAvailable;
+    }
+
 }
