@@ -209,4 +209,22 @@ public class ProfileControllerTest {
         verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfileMailDto.class));
     }
 
+    @Test
+    public void processEditMailForm_formInvalid_shouldHasErrors() throws Exception {
+        when(userService.isEmailAlreadyTaken(any(String.class))).thenReturn(true);
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editMail", "")
+                        .param("email", "new@domain.com")
+                        .param("confirmEmail", ""))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(model().errorCount(4)) // 3 for confirm mail, and emails not match
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfileMailDto.class));
+    }
 }
