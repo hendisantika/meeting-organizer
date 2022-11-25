@@ -117,4 +117,22 @@ public class ProfileControllerTest {
 
         verify(userService, times(0)).saveUserAndFlush(any(User.class));
     }
+
+    @Test
+    public void uploadProfileImage_fileIsNotAnImage_shouldRedirectAndShowMessage() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "orig",
+                MediaType.APPLICATION_JSON_UTF8_VALUE, new byte[]{});
+
+        mvc.perform(
+                        fileUpload(PROFILE_URL).file(file)
+                                .with(csrf())
+                                .with(user(TestHelper.sampleUser()))
+                                .accept(MediaType.MULTIPART_FORM_DATA_VALUE))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile"))
+                .andExpect(flash().attributeCount(1));
+
+        verify(userService, times(0)).saveUserAndFlush(any(User.class));
+    }
+
 }
