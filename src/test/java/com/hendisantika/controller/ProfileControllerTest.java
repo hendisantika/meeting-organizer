@@ -5,6 +5,7 @@ import com.hendisantika.config.MeetingOrganizerConfiguration;
 import com.hendisantika.config.SecurityConfiguration;
 import com.hendisantika.domain.User;
 import com.hendisantika.dto.profile.ProfileInfoDto;
+import com.hendisantika.dto.profile.ProfileMailDto;
 import com.hendisantika.helper.TestHelper;
 import com.hendisantika.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
@@ -186,6 +188,25 @@ public class ProfileControllerTest {
                 .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
 
         verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfileInfoDto.class));
+    }
+
+    @Test
+    public void processEditMailForm_formValidButMailTaken_shouldNotCallService() throws Exception {
+        when(userService.isEmailAlreadyTaken(any(String.class))).thenReturn(true);
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editMail", "")
+                        .param("email", "new@domain.com")
+                        .param("confirmEmail", "new@domain.com"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attributeExists("emailAlreadyTaken"))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfileMailDto.class));
     }
 
 }
