@@ -28,7 +28,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -97,5 +99,22 @@ public class ProfileControllerTest {
                 .andDo(print());
 
         verify(userService, times(1)).saveUserAndFlush(any(User.class));
+    }
+
+    @Test
+    public void uploadProfileImage_fileIsEmpty_shouldRedirectAndShowMessage() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "orig",
+                MediaType.IMAGE_JPEG_VALUE, new byte[]{});
+
+        mvc.perform(
+                        fileUpload(PROFILE_URL).file(file)
+                                .with(csrf())
+                                .with(user(TestHelper.sampleUser()))
+                                .accept(MediaType.MULTIPART_FORM_DATA_VALUE))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile"))
+                .andExpect(flash().attributeCount(1));
+
+        verify(userService, times(0)).saveUserAndFlush(any(User.class));
     }
 }
