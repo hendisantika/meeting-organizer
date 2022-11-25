@@ -3,6 +3,7 @@ package com.hendisantika.controller;
 import com.hendisantika.domain.User;
 import com.hendisantika.dto.profile.ProfileInfoDto;
 import com.hendisantika.dto.profile.ProfileMailDto;
+import com.hendisantika.dto.profile.ProfilePasswordDto;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
 import lombok.RequiredArgsConstructor;
@@ -118,6 +119,35 @@ public class ProfileController {
 
         if (!isNewEmailAvailable(dto.getEmail(), currentUser)) {
             model.addAttribute("emailAlreadyTaken", Boolean.TRUE);
+            return EDIT_PROFILE_PAGE;
+        }
+
+        userService.updateUserProfile(currentUser, dto);
+
+        model.addAttribute("updateSuccessful", Boolean.TRUE);
+        return EDIT_PROFILE_PAGE;
+    }
+
+    @PostMapping(path = "/edit", params = "editPassword")
+    public String processEditPasswordForm(@Valid @ModelAttribute(name = PROFILE_PASSWORD_DTO) ProfilePasswordDto dto,
+                                          BindingResult bindingResult,
+                                          Authentication authentication,
+                                          Model model) {
+
+        User currentUser = (User) authentication.getPrincipal();
+
+        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasGlobalErrors()) {
+                model.addAllAttributes(
+                        errorsUtils.errorMessagesForClassLevelValidations(bindingResult.getGlobalErrors())
+                );
+            }
+
+            return EDIT_PROFILE_PAGE;
+        }
+
+        if (!userService.passwordMatchesStoredPassword(dto.getOldPassword(), currentUser)) {
+            model.addAttribute("currentPasswordNotEqual", Boolean.TRUE);
             return EDIT_PROFILE_PAGE;
         }
 
