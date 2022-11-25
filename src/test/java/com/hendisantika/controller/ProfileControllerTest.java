@@ -227,4 +227,23 @@ public class ProfileControllerTest {
 
         verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfileMailDto.class));
     }
+
+    @Test
+    public void processEditMailForm_formValid_shouldCallService() throws Exception {
+        when(userService.isEmailAlreadyTaken(any(String.class))).thenReturn(false);
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editMail", "")
+                        .param("email", "new@domain.com")
+                        .param("confirmEmail", "new@domain.com"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attributeExists("updateSuccessful"))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(1)).updateUserProfile(any(User.class), any(ProfileMailDto.class));
+    }
 }
