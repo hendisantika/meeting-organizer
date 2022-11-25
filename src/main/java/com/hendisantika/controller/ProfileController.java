@@ -175,4 +175,13 @@ public class ProfileController {
         return isEmailAvailable;
     }
 
+    @ModelAttribute
+    public void profilePageDto(Model model, Authentication authentication) {
+        User currentUser = (User) authentication.getPrincipal();
+
+        model.addAttribute(USER_ATTRIBUTE, currentUser);
+        model.addAttribute(PROFILE_INFO_DTO, new ProfileInfoDto(currentUser));
+        model.addAttribute(PROFILE_MAIL_DTO, new ProfileMailDto());
+        model.addAttribute(PROFILE_PASSWORD_DTO, new ProfilePasswordDto());
+    }
 }
