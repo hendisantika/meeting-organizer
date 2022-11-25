@@ -169,4 +169,23 @@ public class ProfileControllerTest {
         verify(userService, times(1)).updateUserProfile(any(User.class), any(ProfileInfoDto.class));
     }
 
+    @Test
+    public void processEditInfoForm_formInvalid_shouldHasErrors() throws Exception {
+
+        mvc.perform(post(EDIT_PROFILE_URL)
+                        .with(csrf())
+                        .with(user(TestHelper.sampleUser()))
+                        .accept(MediaType.TEXT_HTML)
+                        .param("editInfo", "editInfo")
+                        .param("firstName", "")
+                        .param("lastName", "")
+                        .param("phone", "abc"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(model().errorCount(5))
+                .andExpect(view().name(ProfileController.EDIT_PROFILE_PAGE));
+
+        verify(userService, times(0)).updateUserProfile(any(User.class), any(ProfileInfoDto.class));
+    }
+
 }
