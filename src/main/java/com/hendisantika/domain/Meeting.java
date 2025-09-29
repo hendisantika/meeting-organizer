@@ -1,9 +1,20 @@
 package com.hendisantika.domain;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,18 +30,16 @@ import java.util.List;
  */
 @Entity
 @Table(name = "MEETING")
+@Getter
+@Setter
 public class Meeting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false, unique = true)
-    @Getter
-    @Setter
     private Long id;
 
     @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -38,15 +47,11 @@ public class Meeting {
     @JoinTable(name = "USERS_MEETINGS",
             joinColumns = {@JoinColumn(name = "MEETING_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
-    @Getter
-    @Setter
     private List<User> users;
 
     @ManyToOne(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "LOCALIZATION_ID")
-    @Getter
-    @Setter
     private Location location;
 
     public Meeting() {

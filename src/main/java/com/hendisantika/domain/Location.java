@@ -1,10 +1,20 @@
 package com.hendisantika.domain;
 
 import com.hendisantika.dto.location.LocationDto;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,40 +30,30 @@ import java.util.List;
  */
 @Entity
 @Table(name = "LOCATION")
+@Getter
+@Setter
 public class Location {
 
     @Id
     @Column(name = "ID", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 
     @Column(name = "NAME", nullable = false)
-    @Getter
-    @Setter
     private String name;
 
     @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
     private String description;
 
     @Column(name = "MAX_MEMBERS", nullable = false)
-    @Getter
-    @Setter
     private Integer maxMembers;
 
     @OneToMany
     @JoinColumn(name = "LOCATION_ID")
-    @Getter
-    @Setter
     private List<Reservation> reservations;
 
     @JoinColumn(name = "CREATED_BY", updatable = false)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @Getter
-    @Setter
     private User createdBy;
 
     public Location() {

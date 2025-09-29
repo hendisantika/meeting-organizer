@@ -1,8 +1,7 @@
 package com.hendisantika.dto.location;
 
 import com.hendisantika.domain.Location;
-
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Created by IntelliJ IDEA.

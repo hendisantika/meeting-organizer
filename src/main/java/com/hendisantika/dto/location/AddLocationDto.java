@@ -1,8 +1,7 @@
 package com.hendisantika.dto.location;
 
 import com.hendisantika.validation.UniqueLocationName;
-
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Created by IntelliJ IDEA.

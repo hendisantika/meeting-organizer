@@ -1,11 +1,11 @@
 package com.hendisantika.validation;
 
+import jakarta.validation.ConstraintViolation;
 import org.hibernate.validator.HibernateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import javax.validation.ConstraintViolation;
 import java.util.HashSet;
 import java.util.Set;
 

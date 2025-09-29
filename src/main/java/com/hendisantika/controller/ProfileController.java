@@ -6,6 +6,7 @@ import com.hendisantika.dto.profile.ProfileMailDto;
 import com.hendisantika.dto.profile.ProfilePasswordDto;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
 
 /**
  * Created by IntelliJ IDEA.

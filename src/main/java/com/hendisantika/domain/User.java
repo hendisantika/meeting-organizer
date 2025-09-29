@@ -1,14 +1,28 @@
 package com.hendisantika.domain;
 
 import com.hendisantika.dto.RegistrationFormDto;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,64 +36,45 @@ import java.util.*;
  */
 @Entity
 @Table(name = "USER")
+@Getter
+@Setter
 public class User
         implements UserDetails {
 
     @Id
     @Column(name = "ID", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 
     @Column(name = "FIRSTNAME", nullable = false)
-    @Getter
-    @Setter
     private String firstName;
 
     @Column(name = "LASTNAME", nullable = false)
-    @Getter
-    @Setter
     private String lastName;
 
     @Column(name = "PASSWORD", nullable = false)
-    @Setter
     private String password;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
-    @Getter
-    @Setter
     private String email;
 
     @Column(name = "PHONE")
-    @Getter
-    @Setter
     private String phone;
 
     @Column(name = "ENABLED")
-    @Setter
-    @Type(type = "numeric_boolean")
     private boolean enabled;
 
     @Column(name = "ACCOUNT_NOT_EXPIRED")
-    @Setter
-    @Type(type = "numeric_boolean")
     private boolean accountNonExpired;
 
     @Column(name = "CREDENTIALS_NOT_EXPIRED")
-    @Setter
-    @Type(type = "numeric_boolean")
     private boolean credentialsNonExpired;
 
     @Column(name = "ACCOUNT_NOT_LOCKED")
-    @Setter
-    @Type(type = "numeric_boolean")
     private boolean accountNonLocked;
 
     @Column(name = "PROFILE_PICTURE")
     @Lob
-    @Getter
-    @Setter
     private byte[] profilePicture;
 
 
@@ -89,14 +84,11 @@ public class User
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID")}
     )
-    @Setter
     private Set<Authority> authorities;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
             , mappedBy = "users")
-    @Getter
-    @Setter
     private List<Meeting> meetings;
 
     public User() {

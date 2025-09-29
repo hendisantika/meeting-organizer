@@ -8,6 +8,7 @@ import com.hendisantika.event.RegistrationCompleteEvent;
 import com.hendisantika.service.MailService;
 import com.hendisantika.service.UserService;
 import com.hendisantika.util.ValidationErrorMessagesUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,12 +1,11 @@
 package com.hendisantika.dto.location;
 
 import com.hendisantika.domain.Location;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,17 +17,15 @@ import javax.validation.constraints.NotBlank;
  * Time: 08.08
  * To change this template use File | Settings | File Templates.
  */
+@Getter
+@Setter
 public abstract class LocationDto {
 
     @NotBlank
-    @Getter
-    @Setter
     private String description;
 
     @Min(value = 1)
     @Max(value = 300)
-    @Getter
-    @Setter
     private int maxMembers;
 
     public LocationDto() {

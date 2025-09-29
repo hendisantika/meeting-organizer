@@ -3,10 +3,9 @@ package com.hendisantika.dto;
 import com.hendisantika.validation.FieldsValueMatch;
 import com.hendisantika.validation.ValidEmail;
 import com.hendisantika.validation.ValidPassword;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * Created by IntelliJ IDEA.

@@ -2,11 +2,10 @@ package com.hendisantika.dto.profile;
 
 import com.hendisantika.validation.FieldsValueMatch;
 import com.hendisantika.validation.ValidPassword;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * Created by IntelliJ IDEA.

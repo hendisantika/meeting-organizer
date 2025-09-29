@@ -1,9 +1,16 @@
 package com.hendisantika.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -18,29 +25,23 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "RESERVATION")
+@Getter
+@Setter
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false, unique = true)
-    @Getter
-    @Setter
     private Long id;
 
     @Column(name = "DATE")
-    @Getter
-    @Setter
     private LocalDateTime reservationDate;
 
     @Column(name = "DESCFIPTION")
-    @Getter
-    @Setter
     private String description;
 
     @OneToOne
     @JoinColumn(name = "USER_ID")
-    @Getter
-    @Setter
     private User reserver;
 
     @Override

@@ -1,10 +1,16 @@
 package com.hendisantika.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,23 +26,20 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "AUTHORITY")
+@Getter
+@Setter
 public class Authority
         implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false, unique = true)
-    @Getter
-    @Setter
     private Long id;
 
     @Column(name = "AUTHORITY", nullable = false, unique = true)
-    @Setter // Getter is overrided
     private String authority;
 
     @ManyToMany(mappedBy = "authorities")
-    @Getter
-    @Setter
     private Set<User> users;
 
     public Authority() {
