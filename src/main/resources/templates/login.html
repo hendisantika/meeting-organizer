@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <meta content="text/html ;charset=UTF-8" http-equiv="Content-Type"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title th:text="#{loginPage.title}">Login</title>
+    <title th:text="#{loginPage.title}">Login - Meeting Organizer</title>
     <link href="/webjars/bootstrap/5.3.8/dist/css/bootstrap.min.css"
           rel="stylesheet"
           type="text/css"/>
@@ -14,107 +14,113 @@
           th:href="@{/css/style.css}"
           type="text/css"/>
 </head>
-<body>
-<div class="container">
-    <div class="page-header">
-        <h1>Meeting Organizer <small>Please log in</small></h1>
-    </div>
-    <!-- Additional messages -->
-    <div class="row" th:if="${param.error}">
-        <div class="alert alert-danger col-sm-8 col-sm-offset-2" role="alert">
-            <p th:text="#{login.badCredentials}">Error while login</p>
+<body style="padding-bottom: 0;">
+<div class="login-container">
+    <div class="login-wrapper">
+        <!-- Left Side - Branding -->
+        <div class="login-left">
+            <div class="meeting-icon">📅</div>
+            <h1>Meeting Organizer</h1>
+            <p>Streamline your meetings, boost productivity, and collaborate effortlessly with your team.</p>
+            <ul class="feature-list">
+                <li>Schedule meetings efficiently</li>
+                <li>Manage locations and resources</li>
+                <li>Invite team members instantly</li>
+                <li>Track attendance and outcomes</li>
+            </ul>
         </div>
-    </div>
 
-
-    <div class="row" th:if="${registrationSuccessful}">
-        <div class="alert alert-success col-sm-8 col-sm-offset-2" role="alert">
-            <p th:text="#{registrationPage.successfulReigstration}">Successful registration</p>
-        </div>
-    </div>
-
-
-    <div class="row" th:if="${tokenResend}">
-        <div class="alert alert-success col-sm-8 col-sm-offset-2" role="alert">
-            <p th:text="#{resendTokenPage.emailSend}">Email has been sent</p>
-        </div>
-    </div>
-
-
-    <div class="row" th:if="${tokenNotFound}">
-        <div class="alert alert-danger col-sm-8 col-sm-offset-2" role="alert">
-            <p th:text="#{loginPage.tokenNotFound}">Invalid token</p>
-        </div>
-    </div>
-
-
-    <div class="row" th:if="${tokenExpired}">
-        <div class="alert alert-danger col-sm-8 col-sm-offset-2" role="alert">
-            <p th:text="#{loginPage.tokenExpired}">Token expired</p>
-        </div>
-    </div>
-
-
-    <div class="row" th:if="${userEnabled}">
-        <div class="alert alert-success col-sm-8 col-sm-offset-2" role="alert">
-            <p th:text="#{loginPage.userEnabled}">User enabled</p>
-        </div>
-    </div>
-    <!-- Additional messages -->
-
-
-    <form class="form-horizontal" th:action="@{/login}" th:method="POST">
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 control-label" for="login" th:text="#{label.email}">Email</label>
-            <div class="col-xs-12 col-sm-8">
-                <input class="form-control" id="login" name="username" placeholder="Email" required="required"
-                       type="text"/>
+        <!-- Right Side - Login Form -->
+        <div class="login-right">
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue to Meeting Organizer</p>
             </div>
-        </div>
 
-
-        <div class="form-group">
-            <label class="col-xs-12 col-sm-2 control-label" for="password" th:text="#{label.password}">Password</label>
-            <div class="col-xs-12 col-sm-8">
-                <input class="form-control" id="password" name="password" placeholder="Password" required="required"
-                       type="password"/>
+            <!-- Default Admin Credentials Info -->
+            <div class="alert-custom"
+                 style="background-color: #e7f3ff; border-left: 4px solid #2196F3; color: #0c5460; margin-bottom: 20px;">
+                <strong>ℹ️ Demo Credentials:</strong>
+                <div style="margin-top: 8px;">
+                    <strong>Email:</strong> admin@meetingorganizer.com<br/>
+                    <strong>Password:</strong> admin123
+                </div>
             </div>
-        </div>
 
+            <!-- Alert Messages -->
+            <div class="alert-custom alert-danger-custom" th:if="${param.error}">
+                <strong>⚠️ Login Failed:</strong>
+                <span th:text="#{login.badCredentials}">Invalid email or password</span>
+            </div>
 
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <div class="checkbox">
-                    <label>
-                        <input name="remember-me" type="checkbox"/><span
-                            th:text="#{label.rememberMe}">Remember me</span>
-                    </label>
+            <div class="alert-custom alert-success-custom" th:if="${registrationSuccessful}">
+                <strong>✓ Success!</strong>
+                <span th:text="#{registrationPage.successfulReigstration}">Registration successful</span>
+            </div>
+
+            <div class="alert-custom alert-success-custom" th:if="${tokenResend}">
+                <strong>✓ Email Sent!</strong>
+                <span th:text="#{resendTokenPage.emailSend}">Verification email has been sent</span>
+            </div>
+
+            <div class="alert-custom alert-danger-custom" th:if="${tokenNotFound}">
+                <strong>⚠️ Error:</strong>
+                <span th:text="#{loginPage.tokenNotFound}">Invalid verification token</span>
+            </div>
+
+            <div class="alert-custom alert-danger-custom" th:if="${tokenExpired}">
+                <strong>⚠️ Token Expired:</strong>
+                <span th:text="#{loginPage.tokenExpired}">Your verification token has expired</span>
+            </div>
+
+            <div class="alert-custom alert-success-custom" th:if="${userEnabled}">
+                <strong>✓ Account Activated!</strong>
+                <span th:text="#{loginPage.userEnabled}">Your account has been successfully activated</span>
+            </div>
+
+            <!-- Login Form -->
+            <form th:action="@{/login}" th:method="POST">
+                <div class="form-group-custom">
+                    <label for="login" th:text="#{label.email}">Email Address</label>
+                    <input class="form-control-custom"
+                           id="login"
+                           name="username"
+                           placeholder="Enter your email"
+                           required="required"
+                           type="email"/>
+                </div>
+
+                <div class="form-group-custom">
+                    <label for="password" th:text="#{label.password}">Password</label>
+                    <input class="form-control-custom"
+                           id="password"
+                           name="password"
+                           placeholder="Enter your password"
+                           required="required"
+                           type="password"/>
+                </div>
+
+                <div class="form-check-custom">
+                    <input id="remember-me" name="remember-me" type="checkbox"/>
+                    <label for="remember-me" th:text="#{label.rememberMe}">Remember me</label>
+                </div>
+
+                <button class="btn-login" th:text="#{button.login}" type="submit">Sign In</button>
+            </form>
+
+            <!-- Links -->
+            <div class="login-links">
+                <div style="margin-bottom: 10px;">
+                    <span style="color: #666;">Don't have an account? </span>
+                    <a th:href="@{/register}" th:text="#{loginPage.linkToRegistrationPage}">Create Account</a>
+                </div>
+                <div>
+                    <a th:href="@{/register/resendToken}" th:text="#{href.toResendTokenPage}">Resend Verification
+                        Email</a>
                 </div>
             </div>
         </div>
-
-
-        <div class="form-group">
-            <div class="col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4">
-                <button class="btn btn-default btn-block" th:text="#{button.login}" type="submit">Sign in</button>
-            </div>
-        </div>
-    </form>
-
-
-    <div th:class="text-center">
-        <a th:class="text-center" th:href="@{/register}" th:text="#{loginPage.linkToRegistrationPage}">Dont't have an
-            account? Register me !</a>
-        <br/>
-        <a th:class="text-center" th:href="@{/register/resendToken}" th:text="#{href.toResendTokenPage}">Resend token
-            !</a>
     </div>
-</div>
-<div th:replace="~{fragments/common :: scripts}">
-    <p>Scripts</p>
-</div>
-<div th:replace="~{fragments/common :: footer}">
-    <p>Footer</p>
 </div>
 </body>
 </html>

@@ -140,6 +140,29 @@ spring.mail.username=YOUR_EMAIL@gmail.com
 spring.mail.password=YOUR_APP_PASSWORD
 ```
 
+## Default Admin Login
+
+On first startup, the application automatically creates a default admin user:
+
+| Field    | Value                        |
+|----------|------------------------------|
+| Email    | `admin@meetingorganizer.com` |
+| Password | `admin123`                   |
+| Role     | `ROLE_ADMIN`, `ROLE_USER`    |
+
+**⚠️ Important**: Please change the default password after your first login!
+
+### Customizing Default Admin Credentials
+
+You can customize the default admin credentials in `application.properties`:
+
+```properties
+app.admin.email=admin@meetingorganizer.com
+app.admin.password=admin123
+app.admin.firstname=Admin
+app.admin.lastname=User
+```
+
 ## Security
 
 The application uses Spring Security 6 with:
@@ -147,8 +170,9 @@ The application uses Spring Security 6 with:
 - BCrypt password encoding with custom salt
 - Form-based authentication
 - Remember-me functionality
-- Role-based authorization
+- Role-based authorization (ROLE_USER, ROLE_ADMIN)
 - CSRF protection
+- Auto-initialization of default admin user
 
 ## API Endpoints
 
