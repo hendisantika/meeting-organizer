@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,16 +35,18 @@ public class SecurityConfiguration {
     private final MeetingOrganizerUsersDetailsService userService;
 
     private static final String[] PUBLIC_MATCHERS = {
-            "/static/**",
-            "/webjars/**",
-            "/css/**",
-            "/js/**",
-            "/images/**",
-            "/login/**",
             "/",
             "/register",
             "/register/confirm",
             "/register/resendToken"
+    };
+
+    private static final String[] STATIC_RESOURCES = {
+            "/static/**",
+            "/webjars/**",
+            "/css/**",
+            "/js/**",
+            "/images/**"
     };
 
     private static final String SALT = "salt by Meeting Organizer :)";
@@ -51,6 +54,11 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12, new SecureRandom(SALT.getBytes()));
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(STATIC_RESOURCES);
     }
 
     @Bean

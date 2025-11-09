@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/home")
 public class HomeController {
 
     public static final String HOME_PAGE = "homePage";

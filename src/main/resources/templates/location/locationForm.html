@@ -14,11 +14,11 @@
           type="text/css"/>
 </head>
 <body>
-<div th:replace="fragments/common :: navbar">
+<div th:replace="~{fragments/common :: navbar}">
     <p>Navbar</p>
 </div>
 <div class="container">
-    <div th:replace="location/locationOptions :: locationOptionsThumbnails">
+    <div th:replace="~{location/locationOptions :: locationOptionsThumbnails}">
         <p>Location options</p>
     </div>
 
@@ -85,10 +85,10 @@
         </nav>
     </form>
 </div>
-<div th:replace="fragments/common :: footer">
+<div th:replace="~{fragments/common :: footer}">
     <p>Footer</p>
 </div>
-<div th:replace="fragments/common :: scripts">
+<div th:replace="~{fragments/common :: scripts}">
     <p>Scripts</p>
 </div>
 <script src="../resources/static/location.js" th:src="@{/js/location.js}"></script>

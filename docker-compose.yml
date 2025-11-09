@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:9.4.0
+    image: mysql:9.5.0
     container_name: meeting-organizer-mysql
     environment:
       MYSQL_ROOT_PASSWORD: 53cret
@@ -19,22 +19,22 @@ services:
       timeout: 5s
       retries: 5
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: meeting-organizer-app
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/meeting_organizer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Jakarta&useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: yu71
-      SPRING_DATASOURCE_PASSWORD: 53cret
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - meeting-organizer-network
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: meeting-organizer-app
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/meeting_organizer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Jakarta&useSSL=false&allowPublicKeyRetrieval=true
+#      SPRING_DATASOURCE_USERNAME: yu71
+#      SPRING_DATASOURCE_PASSWORD: 53cret
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+#    networks:
+#      - meeting-organizer-network
 
 volumes:
   mysql-data:
