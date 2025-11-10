@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Meeting Details - Meeting Organizer</title>
+    <link href="/webjars/bootstrap/5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/common :: navbar}"></div>
+
+<div class="page-header-modern">
+    <h1>📋 Meeting Details</h1>
+    <p>View meeting information and participants</p>
+</div>
+
+<div class="modern-container">
+    <div class="row">
+        <!-- Meeting Information -->
+        <div class="col-lg-8">
+            <div class="modern-card">
+                <div class="modern-card-header">
+                    <h2>Meeting Information</h2>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;" th:text="${meeting.description}">
+                        Meeting Description
+                    </h3>
+                </div>
+
+                <!-- Location Info -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div style="padding: 1.5rem; background: #f8f9ff; border-radius: var(--radius-sm); border-left: 4px solid var(--primary-color);">
+                            <h5 style="margin-bottom: 1rem; color: var(--text-dark);">📍 Location</h5>
+                            <div th:if="${meeting.location != null}">
+                                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"
+                                    th:text="${meeting.location.name}">Location Name</h4>
+                                <p style="color: var(--text-light); margin-bottom: 0.5rem;"
+                                   th:text="${meeting.location.description}">Location Description</p>
+                                <div class="d-flex gap-3">
+                                    <span class="badge-modern badge-modern-primary">
+                                        Capacity: <span th:text="${meeting.location.maxMembers}">50</span> people
+                                    </span>
+                                </div>
+                            </div>
+                            <div th:unless="${meeting.location != null}">
+                                <p style="color: var(--text-light);">No location assigned</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meeting Stats -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div style="text-align: center; padding: 1.5rem; background: white; border: 2px solid var(--border-color); border-radius: var(--radius-sm);">
+                            <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">
+                                <span th:text="${#lists.size(meeting.users)}">0</span>
+                            </div>
+                            <div style="color: var(--text-light); font-weight: 600;">Participants</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="text-align: center; padding: 1.5rem; background: white; border: 2px solid var(--border-color); border-radius: var(--radius-sm);">
+                            <div style="font-size: 2.5rem; color: var(--success-color); margin-bottom: 0.5rem;">✓</div>
+                            <div style="color: var(--text-light); font-weight: 600;">Active Meeting</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participants List -->
+        <div class="col-lg-4">
+            <div class="modern-card">
+                <div class="modern-card-header">
+                    <h2>👥 Participants</h2>
+                    <p><span th:text="${#lists.size(meeting.users)}">0</span> people invited</p>
+                </div>
+
+                <div class="empty-state" style="padding: 2rem 1rem;" th:if="${#lists.isEmpty(meeting.users)}">
+                    <div class="empty-state-icon" style="font-size: 3rem;">👥</div>
+                    <h4 style="color: var(--text-light);">No participants</h4>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem;"
+                     th:if="${!#lists.isEmpty(meeting.users)}">
+                    <div style="padding: 1rem; background: #f8f9ff; border-radius: var(--radius-sm); border-left: 3px solid var(--primary-color);"
+                         th:each="user : ${meeting.users}">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                <span th:text="${#strings.substring(user.firstName, 0, 1)}">A</span>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: var(--text-dark);">
+                                    <span th:text="${user.firstName + ' ' + user.lastName}">User Name</span>
+                                    <span class="badge-modern badge-modern-success"
+                                          style="margin-left: 0.5rem; font-size: 0.7rem;"
+                                          th:if="${user.id == currentUser.id}">You</span>
+                                </div>
+                                <div style="font-size: 0.85rem; color: var(--text-light);" th:text="${user.email}">
+                                    email@example.com
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="modern-card">
+                <div class="d-flex gap-3 justify-content-between align-items-center">
+                    <a class="btn btn-modern btn-modern-outline" th:href="@{/meetings}">
+                        ← Back to Meetings
+                    </a>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-modern btn-modern-outline" disabled title="Coming soon">
+                            ✏️ Edit Meeting
+                        </button>
+                        <button class="btn btn-danger" disabled style="opacity: 0.5;" title="Coming soon">
+                            🗑️ Delete Meeting
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common :: footer}"></div>
+<div th:replace="~{fragments/common :: scripts}"></div>
+</body>
+</html>
