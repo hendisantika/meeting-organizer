@@ -24,6 +24,44 @@ A Spring Boot application for managing meeting locations, reservations, and user
 - Role-based access control
 - Responsive UI with Bootstrap
 
+## Image Screen shots
+
+Login Page
+
+![Login Page](img/login.png "Login Page")
+
+Home Page
+
+![Home Page](img/home.png "Home Page")
+
+Add New Meeting
+
+![Add New Meeting](img/add-meeting.png "Add New Meeting")
+
+Browse Location
+
+![Browse Location](img/browse.png "Browse Location")
+
+Location Page
+
+![Location Page](img/location.png "Location Page")
+
+Meeting Details
+
+![Meeting Details](img/meeting-details.png "Meeting Details")
+
+List Meeting
+
+![List Meeting](img/list-meeting.png "List Meeting")
+
+History Page
+
+![History Page](img/history.png "History Page")
+
+People Page
+
+![People Page](img/people.png "People Page")
+
 ## Prerequisites
 
 - Java 21
