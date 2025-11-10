@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -77,5 +79,34 @@ public class MeetingController {
         meetingRepository.save(meeting);
 
         return "redirect:/meetings";
+    }
+
+    @GetMapping("/{id}")
+    public String viewMeetingDetails(@PathVariable Long id,
+                                     @AuthenticationPrincipal UserDetails userDetails,
+                                     Model model) {
+        Optional<Meeting> meetingOpt = meetingRepository.findById(id);
+
+        if (meetingOpt.isEmpty()) {
+            model.addAttribute("error", "Meeting not found");
+            return "redirect:/meetings";
+        }
+
+        Meeting meeting = meetingOpt.get();
+        User currentUser = userRepository.findByEmail(userDetails.getUsername());
+
+        // Check if user is part of this meeting
+        boolean isMember = meeting.getUsers().stream()
+                .anyMatch(user -> user.getId().equals(currentUser.getId()));
+
+        if (!isMember) {
+            model.addAttribute("error", "You don't have access to this meeting");
+            return "redirect:/meetings";
+        }
+
+        model.addAttribute("meeting", meeting);
+        model.addAttribute("currentUser", currentUser);
+
+        return "meetings/detail";
     }
 }
