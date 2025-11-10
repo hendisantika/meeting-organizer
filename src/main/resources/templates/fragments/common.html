@@ -7,141 +7,62 @@
 </head>
 <body>
 <div th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/home}">Meeting Organizer</a>
+    <nav class="navbar navbar-expand-lg modern-navbar">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" th:href="@{/home}">
+                <span style="font-size: 1.5rem;">📅</span> Meeting Organizer
+            </a>
             <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                     class="navbar-toggler" data-bs-target="#navbarSupportedContent"
                     data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!--            <div class="collapse navbar-collapse" id="me-navbar-collapse">-->
-            <!--                <ul class="nav navbar-nav" id="navigation-tabs">-->
-            <!--                    <li><a th:href="@{/profile}" th:text="#{navigation.profile}">Profile <span-->
-            <!--                            class="sr-only">(current)</span></a></li>-->
-            <!--                    <li><a th:href="@{/location}" th:text="#{navigation.locations}">Locations</a></li>-->
-            <!--                    <li><a th:href="@{/history}" th:text="#{navigation.history}">Places</a></li>-->
-            <!--                    <li><a th:href="@{/meetings}" th:text="#{navigation.meetings}">Your Meetings</a></li>-->
-            <!--                    <li><a th:href="@{/meetings/new}" th:text="#{navigation.newMeeting}">New Meeting</a></li>-->
-            <!--                    <li><a th:href="@{/people}" th:text="#{navigation.people}">Search for people</a></li>-->
-            <!--                </ul>-->
-            <!--                <ul class="nav navbar-nav navbar-right">-->
-            <!--                    <li><a th:href="@{/logout}" th:text="#{navigation.logout}">Logout</a></li>-->
-            <!--                </ul>-->
-            <!--                <p class="navbar-text navbar-right" sec:authorize="isAuthenticated()">-->
-            <!--                    <span th:text="#{navigation.hello}"/> <span sec:authentication="name"/>-->
-            <!--                </p>-->
-            <!--            </div>-->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a aria-current="page" class="nav-link active" th:href="@{/profile}"
-                           th:text="#{navigation.profile}">Profile<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{/home}">🏠 Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/location}" th:text="#{navigation.locations}">Locations</a>
+                        <a class="nav-link" th:href="@{/meetings}" th:text="#{navigation.meetings}">📋 Meetings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/history}" th:text="#{navigation.history}">Places</a>
+                        <a class="nav-link" th:href="@{/location}" th:text="#{navigation.locations}">📍 Locations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/meetings}" th:text="#{navigation.meetings}">Your Meetings</a>
+                        <a class="nav-link" th:href="@{/people}" th:text="#{navigation.people}">👥 People</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/meetings/new}" th:text="#{navigation.newMeeting}">New
-                            Meeting</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/people}" th:text="#{navigation.people}">Search for people</a>
+                        <a class="nav-link" th:href="@{/history}" th:text="#{navigation.history}">📜 History</a>
                     </li>
                 </ul>
-                <span class="navbar-text"><a th:href="@{/logout}" th:text="#{navigation.logout}">Logout</a>&nbsp;</span>
-                | &nbsp;
-                <span class="navbar-text" sec:authorize="isAuthenticated()"></span> <span
-                    th:text="#{navigation.hello}"/> <span sec:authentication="name"/>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="navbar-text" sec:authorize="isAuthenticated()" style="color: var(--text-light);">
+                        👋 <span th:text="#{navigation.hello}">Hello</span>, <span sec:authentication="name"/>
+                    </span>
+                    <a class="btn btn-modern btn-modern-outline btn-sm" style="padding: 0.5rem 1rem;"
+                       th:href="@{/profile}">
+                        👤 Profile
+                    </a>
+                    <a class="btn btn-modern btn-modern-primary btn-sm" style="padding: 0.5rem 1rem;"
+                       th:href="@{/meetings/new}">
+                        ➕ New Meeting
+                    </a>
+                    <form method="post" style="margin: 0;" th:action="@{/logout}">
+                        <button class="btn btn-link" style="color: var(--text-light); text-decoration: none; padding: 0.5rem 1rem;"
+                                type="submit">
+                            🚪 Logout
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>
 </div>
-<div class="navbar navbar-default navbar-fixed-bottom" th:fragment="footer2">
+<div class="modern-footer" th:fragment="footer">
     <div class="container">
-        <p class="navbar-text pull-left">© 2022 - Meeting Organizer Hendi Santika</p>
+        <p>© 2022-2025 Meeting Organizer by Hendi Santika. All rights reserved.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Built with ❤️ using Spring Boot & Thymeleaf</p>
     </div>
-</div>
-
-<div class="container" th:fragment="footer">
-    <div class="container">
-        <p class="navbar-text pull-left">© 2022 - Meeting Organizer Hendi Santika</p>
-    </div>
-    <footer class="py-5">
-        <div class="row">
-            <div class="col-2">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Home</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Features</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Pricing</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">FAQs</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col-2">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Home</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Features</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Pricing</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">FAQs</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col-2">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Home</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Features</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">Pricing</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">FAQs</a></li>
-                    <li class="nav-item mb-2"><a class="nav-link p-0 text-muted" href="#">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col-4 offset-1">
-                <form>
-                    <h5>Subscribe to our newsletter</h5>
-                    <p>Monthly digest of whats new and exciting from us.</p>
-                    <div class="d-flex w-100 gap-2">
-                        <label class="visually-hidden" for="newsletter1">Email address</label>
-                        <input class="form-control" id="newsletter1" placeholder="Email address" type="text">
-                        <button class="btn btn-primary" type="button">Subscribe</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between py-4 my-4 border-top">
-            <p>&copy; © 2022 - Meeting Organizer Hendi Santika, Inc. All rights reserved.</p>
-            <ul class="list-unstyled d-flex">
-                <li class="ms-3"><a class="link-dark" href="#">
-                    <svg class="bi" height="24" width="24">
-                        <use xlink:href="#twitter"/>
-                    </svg>
-                </a></li>
-                <li class="ms-3"><a class="link-dark" href="#">
-                    <svg class="bi" height="24" width="24">
-                        <use xlink:href="#instagram"/>
-                    </svg>
-                </a></li>
-                <li class="ms-3"><a class="link-dark" href="#">
-                    <svg class="bi" height="24" width="24">
-                        <use xlink:href="#facebook"/>
-                    </svg>
-                </a></li>
-            </ul>
-        </div>
-    </footer>
 </div>
 
 <div th:fragment="scripts">

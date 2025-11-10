@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Meeting History - Meeting Organizer</title>
+    <link href="/webjars/bootstrap/5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/common :: navbar}"></div>
+
+<div class="page-header-modern">
+    <h1>📜 Meeting History</h1>
+    <p>Review all your past and current meetings</p>
+</div>
+
+<div class="modern-container">
+    <div class="modern-card">
+        <div class="modern-card-header">
+            <h2>Your Meeting History</h2>
+            <p>Total meetings: <strong th:text="${#lists.size(meetings)}">0</strong></p>
+        </div>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(meetings)}">
+            <div class="empty-state-icon">📜</div>
+            <h3>No meeting history yet</h3>
+            <p style="color: var(--text-light);">Your meeting history will appear here</p>
+        </div>
+
+        <div class="row" th:if="${!#lists.isEmpty(meetings)}">
+            <div class="col-md-6" th:each="meeting : ${meetings}">
+                <div class="modern-card" style="margin-bottom: 1.5rem;">
+                    <h5 style="margin-bottom: 1rem;" th:text="${meeting.description}">Meeting Description</h5>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div>
+                            <strong>Location:</strong>
+                            <span th:if="${meeting.location != null}" th:text="${meeting.location.name}">Location</span>
+                            <span style="color: var(--text-light);"
+                                  th:unless="${meeting.location != null}">No location</span>
+                        </div>
+                        <div>
+                            <strong>Participants:</strong>
+                            <span th:text="${#lists.size(meeting.users)} + ' people'">0 people</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common :: footer}"></div>
+<div th:replace="~{fragments/common :: scripts}"></div>
+</body>
+</html>

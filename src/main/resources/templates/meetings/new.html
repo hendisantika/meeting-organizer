@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Schedule New Meeting - Meeting Organizer</title>
+    <link href="/webjars/bootstrap/5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/common :: navbar}"></div>
+
+<div class="page-header-modern">
+    <h1>➕ Schedule New Meeting</h1>
+    <p>Create and organize a new meeting with your team</p>
+</div>
+
+<div class="modern-container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="modern-card">
+                <div class="modern-card-header">
+                    <h2>Meeting Details</h2>
+                    <p>Fill in the information below to schedule your meeting</p>
+                </div>
+
+                <form method="POST" th:action="@{/meetings/new}">
+                    <div class="modern-form-group">
+                        <label class="modern-form-label" for="description">Meeting Description</label>
+                        <textarea class="modern-form-control"
+                                  id="description"
+                                  name="description"
+                                  placeholder="e.g., Weekly Team Sync - Project Updates"
+                                  required
+                                  rows="3"></textarea>
+                    </div>
+
+                    <div class="modern-form-group">
+                        <label class="modern-form-label" for="locationId">Location</label>
+                        <select class="modern-form-control" id="locationId" name="locationId" required>
+                            <option value="">Select a location...</option>
+                            <option th:each="location : ${locations}"
+                                    th:text="${location.name + ' (Capacity: ' + location.maxMembers + ')'}"
+                                    th:value="${location.id}">Location
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="modern-form-group">
+                        <label class="modern-form-label">Invite Participants</label>
+                        <div style="max-height: 300px; overflow-y: auto; border: 2px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem;">
+                            <div class="form-check" style="margin-bottom: 0.5rem;" th:each="user : ${users}">
+                                <input class="form-check-input"
+                                       name="userIds"
+                                       th:id="'user' + ${user.id}"
+                                       th:value="${user.id}"
+                                       type="checkbox"/>
+                                <label class="form-check-label" th:for="'user' + ${user.id}">
+                                    <strong th:text="${user.firstName + ' ' + user.lastName}">User Name</strong>
+                                    <span style="color: var(--text-light);"
+                                          th:text="'(' + ${user.email} + ')'">email</span>
+                                </label>
+                            </div>
+                        </div>
+                        <small style="color: var(--text-light); display: block; margin-top: 0.5rem;">
+                            Select the people you want to invite to this meeting
+                        </small>
+                    </div>
+
+                    <div class="d-flex gap-3 justify-content-end mt-4">
+                        <a class="btn btn-modern btn-modern-outline" th:href="@{/meetings}">
+                            Cancel
+                        </a>
+                        <button class="btn btn-modern btn-modern-primary" type="submit">
+                            Create Meeting
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common :: footer}"></div>
+<div th:replace="~{fragments/common :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Find People - Meeting Organizer</title>
+    <link href="/webjars/bootstrap/5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/common :: navbar}"></div>
+
+<div class="page-header-modern">
+    <h1>👥 Find People</h1>
+    <p>Search and connect with other users</p>
+</div>
+
+<div class="modern-container">
+    <div class="modern-card">
+        <div class="modern-card-header">
+            <h2>Search for People</h2>
+            <p>Find colleagues to invite to your meetings</p>
+        </div>
+
+        <form class="mb-4" method="get" th:action="@{/people}">
+            <div class="input-group">
+                <input class="form-control"
+                       name="search"
+                       placeholder="Search by name or email..."
+                       th:value="${search}"
+                       type="text"/>
+                <button class="btn btn-modern btn-modern-primary" type="submit">
+                    🔍 Search
+                </button>
+            </div>
+        </form>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(users)}">
+            <div class="empty-state-icon">👥</div>
+            <h3>No users found</h3>
+            <p style="color: var(--text-light);">Try a different search term</p>
+        </div>
+
+        <table class="modern-table" th:if="${!#lists.isEmpty(users)}">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td>
+                    <strong th:text="${user.firstName + ' ' + user.lastName}">User Name</strong>
+                </td>
+                <td th:text="${user.email}">email@example.com</td>
+                <td>
+                    <span th:if="${user.phone != null}" th:text="${user.phone}">Phone</span>
+                    <span style="color: var(--text-light);" th:unless="${user.phone != null}">No phone</span>
+                </td>
+                <td>
+                    <span class="badge-modern badge-modern-success" th:if="${user.enabled}">Active</span>
+                    <span class="badge-modern badge-modern-danger" th:unless="${user.enabled}">Inactive</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-3" style="color: var(--text-light);" th:if="${!#lists.isEmpty(users)}">
+            Showing <strong th:text="${#lists.size(users)}">0</strong> user(s)
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common :: footer}"></div>
+<div th:replace="~{fragments/common :: scripts}"></div>
+</body>
+</html>

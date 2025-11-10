@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>My Meetings - Meeting Organizer</title>
+    <link href="/webjars/bootstrap/5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/common :: navbar}"></div>
+
+<div class="page-header-modern">
+    <h1>📋 My Meetings</h1>
+    <p>View and manage all your scheduled meetings</p>
+</div>
+
+<div class="modern-container">
+    <div class="modern-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 style="margin: 0;">Your Meetings</h2>
+                <p style="color: var(--text-light); margin: 0.5rem 0 0 0;">
+                    You have <strong th:text="${#lists.size(meetings)}">0</strong> meeting(s)
+                </p>
+            </div>
+            <a class="btn btn-modern btn-modern-primary" th:href="@{/meetings/new}">
+                ➕ Schedule New Meeting
+            </a>
+        </div>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(meetings)}">
+            <div class="empty-state-icon">📅</div>
+            <h3>No meetings scheduled yet</h3>
+            <p style="color: var(--text-light);">Start by creating your first meeting!</p>
+            <a class="btn btn-modern btn-modern-primary mt-3" th:href="@{/meetings/new}">
+                Schedule a Meeting
+            </a>
+        </div>
+
+        <table class="modern-table" th:if="${!#lists.isEmpty(meetings)}">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Participants</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="meeting, iterStat : ${meetings}">
+                <td th:text="${iterStat.count}">1</td>
+                <td>
+                    <strong th:text="${meeting.description}">Meeting Title</strong>
+                </td>
+                <td>
+                    <span class="badge-modern badge-modern-primary" th:if="${meeting.location != null}"
+                          th:text="${meeting.location.name}">Location</span>
+                    <span style="color: var(--text-light);" th:unless="${meeting.location != null}">No location</span>
+                </td>
+                <td>
+                    <span class="badge-modern badge-modern-success" th:text="${#lists.size(meeting.users)} + ' people'">5 people</span>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-modern-outline" th:href="@{'/meetings/' + ${meeting.id}}">
+                        View Details
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common :: footer}"></div>
+<div th:replace="~{fragments/common :: scripts}"></div>
+</body>
+</html>
